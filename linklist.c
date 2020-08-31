@@ -1,3 +1,10 @@
+/*Desc: Linked List
+	create a node by malloc;
+	insert a node, delete a node, search a node
+
+Author: Liutong XU
+Date: 2018/12/27
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,42 +16,46 @@ typedef struct Node{
 	struct Node *next;
 } NODE;
 
-NODE *createNode(int ids[], char names[][20], int scores[]);
-void printNode(NODE *np);
-void searchNode(NODE *np, int key);
-void traversal(NODE *fNode);
-void insertAfter(NODE *node, NODE *newNode);
-NODE *insertBeginning(NODE *fNode, NODE *newNode);
-void removeAfter(NODE *node);
-NODE *removeBeginning(NODE *fNode);
-NODE *insertOrder(NODE *fNode, NODE *np);
-NODE *deleteOrder(NODE *foNode, int key);
+NODE *createNode(int ids[], char names[][20], int scores[]);	// ĞÂ½¨½áµã£¬·µ»ØÁ´±íÍ·Ö¸Õë
+void printNode(NODE *np);										// ´òÓ¡ËùÓĞ½áµã
+void searchNode(NODE *np, int key);								// °´idËÑË÷½áµã
+void traversal(NODE *fNode);									// ±éÀúÁ´±í
+void insertAfter(NODE *node, NODE *newNode);					// ÔÚÌØ¶¨ĞòºÅµÄ½áµãºó²åÈëÒ»¸ö½áµã
+NODE *insertBeginning(NODE *fNode, NODE *newNode);				// ÔÚÁ´±íµÄ±íÍ·²åÈë½áµã£¬·µ»ØĞÂµÄÁ´±íÍ·Ö¸Õë
+void removeAfter(NODE *node);									// ÔÚÒÆ³ıÌØ¶¨ĞòºÅ½áµãºóµÄÄÇ¸ö½áµã
+NODE *removeBeginning(NODE *fNode);								// ÒÆ³ıÁ´±í±íÍ·µÄ½áµã£¬·µ»ØĞÂµÄÁ´±íÍ·Ö¸Õë
+NODE *insertOrder(NODE *fNode, NODE *np);						// °´¸÷¸ö½áµãµÄid´óĞ¡Ë³Ğò²åÈëÒ»¸öĞÂ½áµã£¨´Ëº¯Êı·µ»ØµÄÖ¸ÕëÎª±»²åÈë½áµã£©
+NODE *deleteOrder(NODE *foNode, int key);						// °´idÑ°ÕÒÏàÓ¦½áµã²¢É¾³ı£¨´Ëº¯Êı·µ»ØµÄÖ¸Õë²»ÊÇÁ´±íÍ·Ö¸Õë¶øÊÇ±»É¾³ı½áµãµÄºóÒ»¸ö½áµã£©
 
 int main()
 {
+		// ²âÊÔÊı¾İ£¬Êı×é
         int ids[N]={1234,5678,3456,4567,2345}; 
         char names[N][20]={"aaa","bbb","ccc","ddd","eee"}; 
         int scores[N]={12,23,34,45,56};
 
-	NODE *fNode=NULL,*foNode=NULL,*newNode=NULL,*np=NULL;
+	NODE *fNode=NULL,*foNode=NULL,*newNode=NULL,*np=NULL;	// ×¼±¸mainº¯ÊıĞèÒªÓÃµ½µÄÖ¸Õë
 	int i;
 	int key;                 
 
-
-	for (i=0;i<4;i++)		//create 5 nodes and input data for the nodes
+	//create 5 nodes and input data for the nodes£¬´´½¨Îå¸öĞÂ½áµã²¢½«Êı¾İ´¢´æ½ø¸÷¸ö½áµã
+	for (i=0;i<4;i++)		
 	{
-		newNode = createNode(ids, names, scores);
-		fNode = insertBeginning(fNode, newNode);
+		newNode = createNode(ids, names, scores);	// ´´½¨ĞÂ½áµã£¬·µ»Ø½áµãÖ¸Õë
+		fNode = insertBeginning(fNode, newNode);	// ½«ĞÂ½áµã²åÈëÁ´±íÍ·²¿£¬·µ»ØÁ´±íÍ·Ö¸Õë
 	}
 
-	traversal(fNode);
+	// ±éÀúÁ´±í²¢´òÓ¡³öÍ¾ÖĞ¾­¹ıµÄÃ¿¸ö½áµãËùĞ¯´øµÄĞÅÏ¢
+	traversal(fNode);		
 
-	printf("Please input a key to search:\n");
+	// ÊäÈëĞèÒª²éÕÒµÄ½áµãid
+	printf("Please input a key to search:\n");	
 	scanf("%d",&key);
-	searchNode(fNode, key);
+	// °´½áµãid±éÀúËÑË÷ĞèÒª²éÕÒµÄ½áµã£¬ÈôÕÒµ½Ôò´òÓ¡³ö¸Ã½áµãËùº¬ĞÅÏ¢
+	searchNode(fNode, key);				
 
-    
-	while(fNode != NULL)
+    // ¶ÔÁ´±í½øĞĞÅÅĞò
+	while(fNode != NULL)				
 	{
 		np = fNode;
 		fNode = fNode->next;
@@ -52,10 +63,12 @@ int main()
 		foNode = insertOrder(foNode, np);
 	}
     
-
-	printf("\nOrdered linked list:\n");
+	// ÔÙ´Î±éÀúÁ´±í²¢´òÓ¡³öÍ¾ÖĞ¾­¹ıµÄÃ¿¸ö½áµãËùĞ¯´øĞÅÏ¢£¨´ËÊ±Á´±íÒÑ°´id´óĞ¡´ÓĞ¡µ½´óÅÅĞò£©
+	printf("\nOrdered linked list:\n");	
 	traversal(foNode);
 
+
+	// ÊäÈëÒ»¸öid£¬É¾³ı¸ÃidµÄ½áµã£¬²¢ÔÙ´Î´òÓ¡³öÕû¸öÁ´±í
 	printf("Please input a key to delete:\n");
 	scanf("%d",&key);
 	foNode = deleteOrder(foNode, key);
@@ -76,26 +89,26 @@ int main()
 }
 NODE *createNode(int ids[], char names[][20], int scores[])
 {
-	static int i = 0;				// ä¸ºäº†ä»æ•°ç»„è¯»å–æ•°æ®ï¼Œ
+	static int i = 0;				// ÎªÁË´ÓÊı×é¶ÁÈ¡Êı¾İ£¬
 	NODE *np;
-	np = (NODE *) malloc(sizeof(NODE));			// åŠ¨æ€åˆ†é…å†…å­˜ï¼Œå­˜æ”¾èŠ‚ç‚¹
+	np = (NODE *) malloc(sizeof(NODE));			// ¶¯Ì¬·ÖÅäÄÚ´æ£¬´æ·Å½Úµã
 	// printf("Please input id, name, score: \n");
 	// scanf("%d%s%d", &np->id, &np->name, &np->score);
 
 	np->id = ids[i];
 	strcpy(np->name, names[i]);
 	np->score = scores[i];
-	np->next = NULL;				// å¾ˆé‡è¦
+	np->next = NULL;				// ºÜÖØÒª
 	i++;
 	return np;
 }
 void searchNode(NODE *np, int key)
 {
-	while(np != NULL && np->id !=key)	// ä¸æ–­æœç´¢ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ï¼Œç›´åˆ°æ‰¾åˆ°idä¸ºæ­¢ï¼Œæˆ–è€…åˆ°é“¾è¡¨æœ«å°¾
+	while(np != NULL && np->id !=key)	// ²»¶ÏËÑË÷ÏÂÒ»¸ö½Úµã£¬Ö±µ½ÕÒµ½idÎªÖ¹£¬»òÕßµ½Á´±íÄ©Î²
 	{
 		np = np->next;
 	}
-	if (np != NULL)					// éæœ«å°¾ï¼Œå³æ‰¾åˆ°
+	if (np != NULL)					// ·ÇÄ©Î²£¬¼´ÕÒµ½
 	{
 		printf("Found a node with key = %d!", key);
 		printNode(np);
@@ -107,7 +120,7 @@ void searchNode(NODE *np, int key)
 void traversal(NODE *fNode)
 {
 	NODE *np = fNode;
-	while(np != NULL)	// ä»ç¬¬ä¸€ä¸ªå¼€å§‹ï¼Œé€šè¿‡nextæœç´¢ä¸‹ä¸€ä¸ªï¼Œå¹¶æ‰“å°æ¯ä¸ªèŠ‚ç‚¹çš„ä¿¡æ¯
+	while(np != NULL)	// ´ÓµÚÒ»¸ö¿ªÊ¼£¬Í¨¹ınextËÑË÷ÏÂÒ»¸ö£¬²¢´òÓ¡Ã¿¸ö½ÚµãµÄĞÅÏ¢
 	{
 		printNode(np);
 		np = np->next;
@@ -155,15 +168,15 @@ void printNode(NODE *np)
 
 NODE *insertOrder(NODE *foNode, NODE *np)
 {
-	if (foNode == NULL)		// ç©ºè¡¨æ—¶ï¼Œè¿”å›æ–°èŠ‚ç‚¹çš„æŒ‡é’ˆnpå³å¯
+	if (foNode == NULL)		// ¿Õ±íÊ±£¬·µ»ØĞÂ½ÚµãµÄÖ¸Õënp¼´¿É
 		return np;
-	if (np->id > foNode->id)	// æ–°èŠ‚ç‚¹çš„idå¤§äºç¬¬ä¸€ä¸ªèŠ‚ç‚¹çš„idï¼Œ
-					// åº”è¯¥æ’å…¥åˆ°ç¬¬2ä¸ªèŠ‚ç‚¹å¼€å§‹çš„é“¾è¡¨ä¸­ï¼Œå¯ä»¥ç”¨é€’å½’æ¥å®ç°ã€‚
+	if (np->id > foNode->id)	// ĞÂ½ÚµãµÄid´óÓÚµÚÒ»¸ö½ÚµãµÄid£¬
+					// Ó¦¸Ã²åÈëµ½µÚ2¸ö½Úµã¿ªÊ¼µÄÁ´±íÖĞ£¬¿ÉÒÔÓÃµİ¹éÀ´ÊµÏÖ¡£
 	{
 		foNode->next = insertOrder(foNode->next, np);
 		return foNode;
 	}
-	else				// æ–°èŠ‚ç‚¹çš„idå°äºç¬¬ä¸€ä¸ªèŠ‚ç‚¹çš„idï¼Œæ–°èŠ‚ç‚¹æ’å…¥åˆ°é“¾è¡¨å¤´ä¸Šã€‚
+	else				// ĞÂ½ÚµãµÄidĞ¡ÓÚµÚÒ»¸ö½ÚµãµÄid£¬ĞÂ½Úµã²åÈëµ½Á´±íÍ·ÉÏ¡£
 	{
 		np->next = foNode;
 		return np;
@@ -173,20 +186,20 @@ NODE *insertOrder(NODE *foNode, NODE *np)
 NODE *deleteOrder(NODE *foNode, int key)
 {
 	NODE *temp;
-	if (foNode == NULL)		// ç©ºè¡¨
-						// æˆ–æ˜¯æŒ‡é’ˆç§»åˆ°æœ«èŠ‚ç‚¹ä¹Ÿæ²¡æœ‰æ‰¾åˆ°
+	if (foNode == NULL)		// ¿Õ±í
+						// »òÊÇÖ¸ÕëÒÆµ½Ä©½ÚµãÒ²Ã»ÓĞÕÒµ½
 	{
 		printf("Not Found!\n");
 		return foNode;
 	}
-	if (foNode->id == key)		// æ‰¾åˆ°äº†
+	if (foNode->id == key)		// ÕÒµ½ÁË
 	{
 		temp = foNode;
 		foNode = foNode->next;
 		free(temp);
 		return foNode;
 	}
-	else				// é€’å½’ä»ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ä¸­åˆ é™¤
+	else				// µİ¹é´ÓÏÂÒ»¸ö½ÚµãÖĞÉ¾³ı
 	{
 		foNode->next = deleteOrder(foNode->next,key);
 		return foNode;
