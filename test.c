@@ -1,10 +1,3 @@
-/*Desc: Linked List
-	create a node by malloc;
-	insert a node, delete a node, search a node
-
-Author: Liutong XU
-Date: 2018/12/27
-*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
