@@ -62,7 +62,7 @@ typedef struct course{
 	char name[20];              //  课程名称
     int credit;                 //  学分（可取范围数字1-4）
     int period;                 //  学时
-    char charateristics[10];    //  课程性质
+    char characteristics[10];    //  课程性质
     char teacher[20];           //  开课教师
     char time[20];              //  上课时间（起止时间格式为：“202*-202*学年第*学期第*周”，
                                 //  上课具体时间段：全天共计10个时间段，早8:00-11:50每50分钟一个时间段；下午1：30-5：20每50分钟一个时间段；晚6：30-8：20没50分钟一个时间段。课间休息均为10分钟。）
@@ -105,17 +105,42 @@ typedef struct teacher{
 } teacher;
 
 
-student *create_std(char id[][10],
-                        char department[][10],
-                        char major[][10],
-                        char name[][20],
-                        char gender[][10],
-                        char phone_number[][11],
-                        char password[][20],
-                        char mailbox[][10]);
-void print_std(student *np);
-void traversal_std(student *fnode);
-student *insertBegining(student *fnode, student *newnode);
+course *create_cos(char id[][6],                    // 创建一个课程结点
+                    char name[][20],
+                    int credit[],
+                    int period[],
+                    char characteritics[][10],
+                    char teacher[][20],
+                    char time[][20],
+                    char place[][20],
+                    int limitation[],
+                    char ioc[][20],
+                    char iom[][20]);
+void print_cos(course *np);                         //  打印某个课程结点
+void traversal_cos(course *fnode);                  //  遍历并打印所有课程
+course *insertBeginning_cos(course *fnode, course *newnode);    //  插入课程链表头部
+
+student *create_std(char id[][10],                  //  创建一个学生结点
+                    char department[][10],
+                    char major[][10],
+                    char name[][20],
+                    char gender[][10],
+                    char phone_number[][11],
+                    char password[][20],
+                    char mailbox[][10]);
+void print_std(student *np);                        //  打印某个学生结点
+void traversal_std(student *fnode);                 //  遍历并打印所有学生结点
+student *insertBeginning_std(student *fnode, student *newnode);  //  插入学生链表头部
+
+
+teacher *create_tch(char id[][10],                  //  创建一个老师结点
+                    char department[][10],
+                    char name[][20],
+                    char mailbox[10],
+                    char password[][20]);
+void print_tch(teacher *np);                        //  打印某个老师结点
+void traversal_tch(teacher *fnode);                 //  遍历并打印所有老师结点
+teacher *insertBeginning_tch(teacher *fnode, teacher *newnode); //  插入老师结点头部
 
 int main()
 {
@@ -137,7 +162,7 @@ int main()
     for(i=0;i<5;i++)
     {
         new_student = create_std(id,department,major,name,gender,phone_number,password,mailbox);
-        fstudent = insertBegining(fstudent, new_student);
+        fstudent = insertBeginning(fstudent, new_student);
     }
     traversal_std(fstudent);
 
@@ -169,12 +194,13 @@ student *create_std(char id[][10],
     return np;
 }
 
-void print_std(student *np)
+
+void print_std(student *np) //  打印某个学生结点
 {
     printf("ID: %s / Department: %s / Major: %s / Name: %s / Gender: %s / Phone number: %s / Password: %s / Mailbox: %s\n", np->id, np->department, np->major, np->name, np->gender, np->phone_number, np->password, np->mailbox);
 }
 
-void traversal_std(student *fnode)
+void traversal_std(student *fnode)  //  遍历并打印所有学生结点
 {
     student *np = fnode;
     while(np != NULL)
@@ -184,9 +210,28 @@ void traversal_std(student *fnode)
     }
 }
 
-student *insertBegining(student *fnode, student *newnode)
+student *insertBeginning_std(student *fnode, student *newnode)  //  插入学生链表头部  
 {
     newnode->next = fnode;
     fnode = newnode;
     return fnode;
 }
+void print_cos(course *np)  //  打印某个课程结点
+{
+    printf("ID: %s / Name: %s / Credit: %d / Period: %d / Characteristics: %s / Teacher: %s / Time: %s / Place: %s / Limitation: %d / Introduction of course: %s / Information of material: %s\n", np->id, np->name, np->credit, np->period, np->characteristics, np->teacher, np->time, np->place, np->limitation, np->ioc, np->iom);
+}
+void traversal_cos(course *fnode)   //  遍历并打印所有课程
+{
+    course *np = fnode; 
+    while(np != NULL)
+    {
+        print_cos(np);
+        np = np->next;
+    }
+}
+course *insertBeginning_cos(course *fnode, course *newnode)
+{
+    newnode->next = fnode;
+    fnode = newnode;
+    return fnode;
+} 
