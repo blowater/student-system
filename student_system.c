@@ -87,7 +87,7 @@ typedef struct student{
 	char phone_number[11];      //  电话（11位数字）
 	char password[20];          //  密码
 	char mailbox[10];           //  邮箱（符合***@***.***的规范）
-    course ;
+    course *s_course1, *s_course2, *s_course3;      
 	struct student *next;       
 } student;
 
@@ -100,7 +100,7 @@ typedef struct teacher{
 	char name[20];              //  姓名
 	char mailbox[10];           //  邮箱
 	char password[20];          //  密码
-    course ;
+    course *t_course1, *t_course2;
 	struct teacher *next;   
 } teacher;
 
@@ -190,6 +190,9 @@ student *create_std(char id[][10],
     strcpy(np->phone_number, phone_number[i]);
     strcpy(np->password, password[i]);
     strcpy(np->mailbox, mailbox[i]);
+    np->s_course1 = NULL;
+    np->s_course2 = NULL;
+    np->s_course3 = NULL;
     np->next = NULL;
     i++;
     return np;
@@ -272,6 +275,8 @@ teacher *create_tch(char id[][10],                  //  创建一个教师结点
 
 
     */
+    np->t_course1 = NULL;
+    np->t_course2 = NULL;
     np->next = NULL;
     return np;
 }
