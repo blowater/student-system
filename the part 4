@@ -1,4 +1,4 @@
-void searchcource(cos *np, char key)
+void searchcource(course *np, char key)
 
 {
 
@@ -23,3 +23,54 @@ void searchcource(cos *np, char key)
 		printf("Not Found!\n");
 
 }
+void insertcourse(course *course ,course *nextcourse,teacher*np ,coururse*nb)
+{ 
+    char nam;
+	printf("please answer your name.");
+	scanf("%c"nam);
+	while(nb != NULL && nb->name !=nam)	
+
+	{
+
+		nb = nb->next;
+
+	}
+
+	if (nb != NULL)	
+	{
+	if(nb->t_course1!=NULL&&nb->t_course2!=NULL)				//判断有无多课 
+     {
+     	newcourse->next = course;
+     	
+     	printf("please input your course name.");
+     	scanf("%c"newcourse->name);
+     	printf("please input your course credit1-4");
+     	scanf("%d"newcourse->credit);
+     	printf("please input your course period");    //时间 
+     	scanf("%d"newcourse->period);
+     	printf("please input your course id");
+     	scanf("%d"newcourse->id);
+     	while(id!=nb->id)             // 判断编号有无重复 
+     	{
+     		nb=nb->next;
+     		if(nb->next==NULL)
+     		{
+     				printf("please input your course characteristics");
+     	            scanf("%c"newcourse->characteristics);
+                 	newcourse->teacher=nam;
+     	printf("please input your course place");
+     	scanf("%c"newcourse->place);
+     	printf("please input your course introduction of course");
+    	scanf("%c"newcourse->ioc); 	
+	    printf("please input your course information of material");
+        scanf("%c"newcourse->iom); 
+        printf("please input your course limitation 60 or 80");
+        scanf("%d"newcourse->limitation);
+        while(newcourse->limitation!=60&&newcourse->limitation!=80)      //判断人数 
+        {
+        	printf("please input your course limitation 60 or 80");
+            scanf("%d"newcourse->limitation);
+		}
+			 }
+		 }
+     
