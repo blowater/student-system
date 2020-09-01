@@ -87,7 +87,7 @@ typedef struct student{
 	char phone_number[11];      //  电话（11位数字）
 	char password[20];          //  密码
 	char mailbox[10];           //  邮箱（符合***@***.***的规范）
-    course *s_course1, *s_course2, *s_course3;      
+    course *s_course1, *s_course2, *s_course3;  //  学生选修课程指针（用作学生选修或删除或查询课程）      
 	struct student *next;       
 } student;
 
@@ -100,7 +100,7 @@ typedef struct teacher{
 	char name[20];              //  姓名
 	char mailbox[10];           //  邮箱
 	char password[20];          //  密码
-    course *t_course1, *t_course2;
+    course *t_course1, *t_course2;              //  教师开设课程指针（用作教师开设或删除或查询课程）
 	struct teacher *next;   
 } teacher;
 
