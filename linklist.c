@@ -16,45 +16,45 @@ typedef struct Node{
 	struct Node *next;
 } NODE;
 
-NODE *createNode(int ids[], char names[][20], int scores[]);			// æ–°å»ºç»“ç‚¹ï¼Œè¿”å›é“¾è¡¨å¤´æŒ‡é’ˆ
-void printNode(NODE *np);							// æ‰“å°æ‰€æœ‰ç»“ç‚¹
-void searchNode(NODE *np, int key);						// æŒ‰idæœç´¢ç»“ç‚¹
-void traversal(NODE *fNode);							// éå†é“¾è¡¨
-void insertAfter(NODE *node, NODE *newNode);					// åœ¨ç‰¹å®šåºå·çš„ç»“ç‚¹åæ’å…¥ä¸€ä¸ªç»“ç‚¹
-NODE *insertBeginning(NODE *fNode, NODE *newNode);				// åœ¨é“¾è¡¨çš„è¡¨å¤´æ’å…¥ç»“ç‚¹ï¼Œè¿”å›æ–°çš„é“¾è¡¨å¤´æŒ‡é’ˆ
-void removeAfter(NODE *node);							// åœ¨ç§»é™¤ç‰¹å®šåºå·ç»“ç‚¹åçš„é‚£ä¸ªç»“ç‚¹
-NODE *removeBeginning(NODE *fNode);						// ç§»é™¤é“¾è¡¨è¡¨å¤´çš„ç»“ç‚¹ï¼Œè¿”å›æ–°çš„é“¾è¡¨å¤´æŒ‡é’ˆ
-NODE *insertOrder(NODE *fNode, NODE *np);					// æŒ‰å„ä¸ªç»“ç‚¹çš„idå¤§å°é¡ºåºæ’å…¥ä¸€ä¸ªæ–°ç»“ç‚¹ï¼ˆæ­¤å‡½æ•°è¿”å›çš„æŒ‡é’ˆä¸ºè¢«æ’å…¥ç»“ç‚¹ï¼‰
-NODE *deleteOrder(NODE *foNode, int key);					// æŒ‰idå¯»æ‰¾ç›¸åº”ç»“ç‚¹å¹¶åˆ é™¤ï¼ˆæ­¤å‡½æ•°è¿”å›çš„æŒ‡é’ˆä¸æ˜¯é“¾è¡¨å¤´æŒ‡é’ˆè€Œæ˜¯è¢«åˆ é™¤ç»“ç‚¹çš„åä¸€ä¸ªç»“ç‚¹ï¼‰
+NODE *createNode(int ids[], char names[][20], int scores[]);	// ĞÂ½¨½áµã£¬·µ»ØÁ´±íÍ·Ö¸Õë
+void printNode(NODE *np);										// ´òÓ¡Ä³¸ö½áµãËùĞ¯´øµÄĞÅÏ¢
+void searchNode(NODE *np, int key);								// °´idËÑË÷½áµã
+void traversal(NODE *fNode);									// ±éÀúÁ´±í
+void insertAfter(NODE *node, NODE *newNode);					// ÔÚÌØ¶¨ĞòºÅµÄ½áµãºó²åÈëÒ»¸ö½áµã
+NODE *insertBeginning(NODE *fNode, NODE *newNode);				// ÔÚÁ´±íµÄ±íÍ·²åÈë½áµã£¬·µ»ØĞÂµÄÁ´±íÍ·Ö¸Õë
+void removeAfter(NODE *node);									// ÔÚÒÆ³ıÌØ¶¨ĞòºÅ½áµãºóµÄÄÇ¸ö½áµã
+NODE *removeBeginning(NODE *fNode);								// ÒÆ³ıÁ´±í±íÍ·µÄ½áµã£¬·µ»ØĞÂµÄÁ´±íÍ·Ö¸Õë
+NODE *insertOrder(NODE *fNode, NODE *np);						// °´¸÷¸ö½áµãµÄid´óĞ¡Ë³Ğò²åÈëÒ»¸öĞÂ½áµã£¨´Ëº¯Êı·µ»ØµÄÖ¸ÕëÎª±»²åÈë½áµã£©
+NODE *deleteOrder(NODE *foNode, int key);						// °´idÑ°ÕÒÏàÓ¦½áµã²¢É¾³ı£¨´Ëº¯Êı·µ»ØµÄÖ¸Õë²»ÊÇÁ´±íÍ·Ö¸Õë¶øÊÇ±»É¾³ı½áµãµÄºóÒ»¸ö½áµã£©
 
 int main()
 {
-	// æµ‹è¯•æ•°æ®ï¼Œæ•°ç»„
+		// ²âÊÔÊı¾İ£¬Êı×é
         int ids[N]={1234,5678,3456,4567,2345}; 
         char names[N][20]={"aaa","bbb","ccc","ddd","eee"}; 
         int scores[N]={12,23,34,45,56};
 
-	NODE *fNode=NULL,*foNode=NULL,*newNode=NULL,*np=NULL;	// å‡†å¤‡mainå‡½æ•°éœ€è¦ç”¨åˆ°çš„æŒ‡é’ˆ
+	NODE *fNode=NULL,*foNode=NULL,*newNode=NULL,*np=NULL;	// ×¼±¸mainº¯ÊıĞèÒªÓÃµ½µÄÖ¸Õë
 	int i;
 	int key;                 
 
-	//create 5 nodes and input data for the nodesï¼Œåˆ›å»ºäº”ä¸ªæ–°ç»“ç‚¹å¹¶å°†æ•°æ®å‚¨å­˜è¿›å„ä¸ªç»“ç‚¹
+	//create 5 nodes and input data for the nodes£¬´´½¨Îå¸öĞÂ½áµã²¢½«Êı¾İ´¢´æ½ø¸÷¸ö½áµã
 	for (i=0;i<4;i++)		
 	{
-		newNode = createNode(ids, names, scores);	// åˆ›å»ºæ–°ç»“ç‚¹ï¼Œè¿”å›ç»“ç‚¹æŒ‡é’ˆ
-		fNode = insertBeginning(fNode, newNode);	// å°†æ–°ç»“ç‚¹æ’å…¥é“¾è¡¨å¤´éƒ¨ï¼Œè¿”å›é“¾è¡¨å¤´æŒ‡é’ˆ
+		newNode = createNode(ids, names, scores);	// ´´½¨ĞÂ½áµã£¬·µ»Ø½áµãÖ¸Õë
+		fNode = insertBeginning(fNode, newNode);	// ½«ĞÂ½áµã²åÈëÁ´±íÍ·²¿£¬·µ»ØÁ´±íÍ·Ö¸Õë
 	}
 
-	// éå†é“¾è¡¨å¹¶æ‰“å°å‡ºé€”ä¸­ç»è¿‡çš„æ¯ä¸ªç»“ç‚¹æ‰€æºå¸¦çš„ä¿¡æ¯
+	// ±éÀúÁ´±í²¢´òÓ¡³öÍ¾ÖĞ¾­¹ıµÄÃ¿¸ö½áµãËùĞ¯´øµÄĞÅÏ¢
 	traversal(fNode);		
 
-	// è¾“å…¥éœ€è¦æŸ¥æ‰¾çš„ç»“ç‚¹id
+	// ÊäÈëĞèÒª²éÕÒµÄ½áµãid
 	printf("Please input a key to search:\n");	
 	scanf("%d",&key);
-	// æŒ‰ç»“ç‚¹idéå†æœç´¢éœ€è¦æŸ¥æ‰¾çš„ç»“ç‚¹ï¼Œè‹¥æ‰¾åˆ°åˆ™æ‰“å°å‡ºè¯¥ç»“ç‚¹æ‰€å«ä¿¡æ¯
+	// °´½áµãid±éÀúËÑË÷ĞèÒª²éÕÒµÄ½áµã£¬ÈôÕÒµ½Ôò´òÓ¡³ö¸Ã½áµãËùº¬ĞÅÏ¢
 	searchNode(fNode, key);				
 
-    	// å¯¹é“¾è¡¨è¿›è¡Œæ’åº
+    // ¶ÔÁ´±í½øĞĞÅÅĞò
 	while(fNode != NULL)				
 	{
 		np = fNode;
@@ -63,12 +63,12 @@ int main()
 		foNode = insertOrder(foNode, np);
 	}
     
-	// å†æ¬¡éå†é“¾è¡¨å¹¶æ‰“å°å‡ºé€”ä¸­ç»è¿‡çš„æ¯ä¸ªç»“ç‚¹æ‰€æºå¸¦ä¿¡æ¯ï¼ˆæ­¤æ—¶é“¾è¡¨å·²æŒ‰idå¤§å°ä»å°åˆ°å¤§æ’åºï¼‰
+	// ÔÙ´Î±éÀúÁ´±í²¢´òÓ¡³öÍ¾ÖĞ¾­¹ıµÄÃ¿¸ö½áµãËùĞ¯´øĞÅÏ¢£¨´ËÊ±Á´±íÒÑ°´id´óĞ¡´ÓĞ¡µ½´óÅÅĞò£©
 	printf("\nOrdered linked list:\n");	
 	traversal(foNode);
 
 
-	// è¾“å…¥ä¸€ä¸ªidï¼Œåˆ é™¤è¯¥idçš„ç»“ç‚¹ï¼Œå¹¶å†æ¬¡æ‰“å°å‡ºæ•´ä¸ªé“¾è¡¨
+	// ÊäÈëÒ»¸öid£¬É¾³ı¸ÃidµÄ½áµã£¬²¢ÔÙ´Î´òÓ¡³öÕû¸öÁ´±í
 	printf("Please input a key to delete:\n");
 	scanf("%d",&key);
 	foNode = deleteOrder(foNode, key);
@@ -89,26 +89,26 @@ int main()
 }
 NODE *createNode(int ids[], char names[][20], int scores[])
 {
-	static int i = 0;				// ä¸ºäº†ä»æ•°ç»„è¯»å–æ•°æ®ï¼Œ
+	static int i = 0;				// ÎªÁË´ÓÊı×é¶ÁÈ¡Êı¾İ£¬
 	NODE *np;
-	np = (NODE *) malloc(sizeof(NODE));			// åŠ¨æ€åˆ†é…å†…å­˜ï¼Œå­˜æ”¾èŠ‚ç‚¹
+	np = (NODE *) malloc(sizeof(NODE));			// ¶¯Ì¬·ÖÅäÄÚ´æ£¬´æ·Å½Úµã
 	// printf("Please input id, name, score: \n");
 	// scanf("%d%s%d", &np->id, &np->name, &np->score);
 
 	np->id = ids[i];
 	strcpy(np->name, names[i]);
 	np->score = scores[i];
-	np->next = NULL;				// å¾ˆé‡è¦
+	np->next = NULL;				// ºÜÖØÒª
 	i++;
 	return np;
 }
 void searchNode(NODE *np, int key)
 {
-	while(np != NULL && np->id !=key)	// ä¸æ–­æœç´¢ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ï¼Œç›´åˆ°æ‰¾åˆ°idä¸ºæ­¢ï¼Œæˆ–è€…åˆ°é“¾è¡¨æœ«å°¾
+	while(np != NULL && np->id !=key)	// ²»¶ÏËÑË÷ÏÂÒ»¸ö½Úµã£¬Ö±µ½ÕÒµ½idÎªÖ¹£¬»òÕßµ½Á´±íÄ©Î²
 	{
 		np = np->next;
 	}
-	if (np != NULL)					// éæœ«å°¾ï¼Œå³æ‰¾åˆ°
+	if (np != NULL)					// ·ÇÄ©Î²£¬¼´ÕÒµ½
 	{
 		printf("Found a node with key = %d!", key);
 		printNode(np);
@@ -120,7 +120,7 @@ void searchNode(NODE *np, int key)
 void traversal(NODE *fNode)
 {
 	NODE *np = fNode;
-	while(np != NULL)	// ä»ç¬¬ä¸€ä¸ªå¼€å§‹ï¼Œé€šè¿‡nextæœç´¢ä¸‹ä¸€ä¸ªï¼Œå¹¶æ‰“å°æ¯ä¸ªèŠ‚ç‚¹çš„ä¿¡æ¯
+	while(np != NULL)	// ´ÓµÚÒ»¸ö¿ªÊ¼£¬Í¨¹ınextËÑË÷ÏÂÒ»¸ö£¬²¢´òÓ¡Ã¿¸ö½ÚµãµÄĞÅÏ¢
 	{
 		printNode(np);
 		np = np->next;
@@ -168,15 +168,15 @@ void printNode(NODE *np)
 
 NODE *insertOrder(NODE *foNode, NODE *np)
 {
-	if (foNode == NULL)		// ç©ºè¡¨æ—¶ï¼Œè¿”å›æ–°èŠ‚ç‚¹çš„æŒ‡é’ˆnpå³å¯
+	if (foNode == NULL)		// ¿Õ±íÊ±£¬·µ»ØĞÂ½ÚµãµÄÖ¸Õënp¼´¿É
 		return np;
-	if (np->id > foNode->id)	// æ–°èŠ‚ç‚¹çš„idå¤§äºç¬¬ä¸€ä¸ªèŠ‚ç‚¹çš„idï¼Œ
-					// åº”è¯¥æ’å…¥åˆ°ç¬¬2ä¸ªèŠ‚ç‚¹å¼€å§‹çš„é“¾è¡¨ä¸­ï¼Œå¯ä»¥ç”¨é€’å½’æ¥å®ç°ã€‚
+	if (np->id > foNode->id)	// ĞÂ½ÚµãµÄid´óÓÚµÚÒ»¸ö½ÚµãµÄid£¬
+					// Ó¦¸Ã²åÈëµ½µÚ2¸ö½Úµã¿ªÊ¼µÄÁ´±íÖĞ£¬¿ÉÒÔÓÃµİ¹éÀ´ÊµÏÖ¡£
 	{
 		foNode->next = insertOrder(foNode->next, np);
 		return foNode;
 	}
-	else				// æ–°èŠ‚ç‚¹çš„idå°äºç¬¬ä¸€ä¸ªèŠ‚ç‚¹çš„idï¼Œæ–°èŠ‚ç‚¹æ’å…¥åˆ°é“¾è¡¨å¤´ä¸Šã€‚
+	else				// ĞÂ½ÚµãµÄidĞ¡ÓÚµÚÒ»¸ö½ÚµãµÄid£¬ĞÂ½Úµã²åÈëµ½Á´±íÍ·ÉÏ¡£
 	{
 		np->next = foNode;
 		return np;
@@ -186,20 +186,20 @@ NODE *insertOrder(NODE *foNode, NODE *np)
 NODE *deleteOrder(NODE *foNode, int key)
 {
 	NODE *temp;
-	if (foNode == NULL)		// ç©ºè¡¨
-						// æˆ–æ˜¯æŒ‡é’ˆç§»åˆ°æœ«èŠ‚ç‚¹ä¹Ÿæ²¡æœ‰æ‰¾åˆ°
+	if (foNode == NULL)		// ¿Õ±í
+						// »òÊÇÖ¸ÕëÒÆµ½Ä©½ÚµãÒ²Ã»ÓĞÕÒµ½
 	{
 		printf("Not Found!\n");
 		return foNode;
 	}
-	if (foNode->id == key)		// æ‰¾åˆ°äº†
+	if (foNode->id == key)		// ÕÒµ½ÁË
 	{
 		temp = foNode;
 		foNode = foNode->next;
 		free(temp);
 		return foNode;
 	}
-	else				// é€’å½’ä»ä¸‹ä¸€ä¸ªèŠ‚ç‚¹ä¸­åˆ é™¤
+	else				// µİ¹é´ÓÏÂÒ»¸ö½ÚµãÖĞÉ¾³ı
 	{
 		foNode->next = deleteOrder(foNode->next,key);
 		return foNode;
