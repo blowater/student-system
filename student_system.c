@@ -56,26 +56,36 @@
 #include <stdlib.h>
 #include <string.h>
 #define N 5
+//  教师结构体
+typedef struct teacher{
+	char id[10];                //  工号（10位数字）
+	char department[10];        //  院系
+	char name[20];              //  姓名
+	char mailbox[10];           //  邮箱
+	char password[20];          //  密码
+    course *t_course1, *t_course2;  //  教师开设课程指针（用作教师开设或删除或查询课程，初始未开设为NULL）
+	struct teacher *next;   
+} teacher;
+
 //  课程结构体
 typedef struct course{
 	char id[6];                 //  课程编号（6位数字）
 	char name[20];              //  课程名称
     int credit;                 //  学分（可取范围数字1-4）
     int period;                 //  学时
-    char characteristics[10];    //  课程性质
+    char characteristics[10];   //  课程性质
     char teacher[20];           //  开课教师
-    char time[20];              //  上课时间（起止时间格式为：“202*-202*学年第*学期第*周”，
-                                //  上课具体时间段：全天共计10个时间段，早8:00-11:50每50分钟一个时间段；下午1：30-5：20每50分钟一个时间段；晚6：30-8：20没50分钟一个时间段。课间休息均为10分钟。）
-
-    char place[20];             //  上课地点（上课地点格式：“楼号-房间号。1表示教一楼，2表示教二楼。房间号为3为数字。）
+    int year;                   //  上课时间（起止时间格式为：“202*-202*学年第*学期第*周”，
+    int semester;
+    int week;
+    int time[10];                   //  上课具体时间段：全天共计10个时间段，早8:00-11:50每50分钟一个时间段；下午1：30-5：20每50分钟一个时间段；晚6：30-8：20没50分钟一个时间段。课间休息均为10分钟。）
+    int building;               //  上课地点（上课地点格式：“楼号-房间号。1表示教一楼，2表示教二楼。房间号为3为数字。）
+    int room;        
     int limitation;             //  限制人数（80和100人）
     char ioc[20];               //  "ioc" == "introduction of course"，课程简介
     char iom[20];               //  "iom" == "information of material"，教材信息
 	struct course *next;
 } course;
-
-
-
 
 //  学生结构体
 typedef struct student{
@@ -87,22 +97,19 @@ typedef struct student{
 	char phone_number[11];      //  电话（11位数字）
 	char password[20];          //  密码
 	char mailbox[10];           //  邮箱（符合***@***.***的规范）
-    course *s_course1, *s_course2, *s_course3;  //  学生选修课程指针（用作学生选修或删除或查询课程）      
+    course *s_course1, *s_course2, *s_course3;  //  学生选修课程指针（用作学生选修或删除或查询课程，初始未选修则为NULL）      
 	struct student *next;       
 } student;
 
-
-
-//  教师结构体
-typedef struct teacher{
-	char id[10];                //  工号（10位数字）
-	char department[10];        //  院系
-	char name[20];              //  姓名
-	char mailbox[10];           //  邮箱
-	char password[20];          //  密码
-    course *t_course1, *t_course2;              //  教师开设课程指针（用作教师开设或删除或查询课程）
-	struct teacher *next;   
-} teacher;
+//  教师链表基本操作
+teacher *create_tch(char id[][10],                  //  创建一个教师结点
+                    char department[][10],
+                    char name[][20],
+                    char mailbox[10],
+                    char password[][20]);
+void print_tch(teacher *np);                        //  打印某个教师结点
+void traversal_tch(teacher *fnode);                 //  遍历并打印所有教师结点
+teacher *insertBeginning_tch(teacher *fnode, teacher *newnode); //  插入教师结点头部
 
 //  课程链表基础操作
 course *create_cos(char id[][6],                    // 创建一个课程结点
@@ -111,8 +118,12 @@ course *create_cos(char id[][6],                    // 创建一个课程结点
                     int period[],
                     char characteritics[][10],
                     char teacher[][20],
-                    char time[][20],
-                    char place[][20],
+                    int year[],
+                    int semester[],
+                    int week[],
+                    int time[][10],
+                    int building,
+                    int room[],
                     int limitation[],
                     char ioc[][20],
                     char iom[][20]);
@@ -132,16 +143,6 @@ student *create_std(char id[][10],                  //  创建一个学生结点
 void print_std(student *np);                        //  打印某个学生结点
 void traversal_std(student *fnode);                 //  遍历并打印所有学生结点
 student *insertBeginning_std(student *fnode, student *newnode);  //  插入学生链表头部
-
-//  教师链表基本操作
-teacher *create_tch(char id[][10],                  //  创建一个教师结点
-                    char department[][10],
-                    char name[][20],
-                    char mailbox[10],
-                    char password[][20]);
-void print_tch(teacher *np);                        //  打印某个教师结点
-void traversal_tch(teacher *fnode);                 //  遍历并打印所有教师结点
-teacher *insertBeginning_tch(teacher *fnode, teacher *newnode); //  插入教师结点头部
 
 int main()
 {
