@@ -216,6 +216,7 @@ student *insertBeginning_std(student *fnode, student *newnode)  //  插入学生链表
     fnode = newnode;
     return fnode;
 }
+
 void print_cos(course *np)  //  打印某个课程结点
 {
     printf("ID: %s / Name: %s / Credit: %d / Period: %d / Characteristics: %s / Teacher: %s / Time: %s / Place: %s / Limitation: %d / Introduction of course: %s / Information of material: %s\n", np->id, np->name, np->credit, np->period, np->characteristics, np->teacher, np->time, np->place, np->limitation, np->ioc, np->iom);
@@ -229,9 +230,29 @@ void traversal_cos(course *fnode)   //  遍历并打印所有课程
         np = np->next;
     }
 }
-course *insertBeginning_cos(course *fnode, course *newnode)
+course *insertBeginning_cos(course *fnode, course *newnode) //  插入课程链表头部
 {
     newnode->next = fnode;
+    fnode = newnode;
+    return fnode;
+} 
+
+void print_tch(teacher *np) //  打印某个教师结点
+{
+    printf("ID: %s / Department: %s / Name: %s / Mailbox: %s / Password: %s\n", np->id, np->department, np->name, np->mailbox, np->password);
+}                        
+void traversal_tch(teacher *fnode)  //  遍历并打印所有教师
+{
+    teacher *np = fnode; 
+    while(np != NULL)
+    {
+        printnode(np);
+        np = np->next;
+    }
+}               
+teacher *insertBeginning_tch(teacher *fnode, teacher *newnode)  //  插入教师链表头部
+{
+    newnode->next = fnode; 
     fnode = newnode;
     return fnode;
 } 
