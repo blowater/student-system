@@ -173,10 +173,10 @@ int main()
     char mailbox[N][10]={"1","2","3","4","5"};
 
 
-    student *fstudent=NULL,*fostudent=NULL,*new_student=NULL,*np_s=NULL;
-    teacher *fteacher=NULL,*foteacher=NULL,*new_teacher=NULL,*np_t=NULL;
-    course *t_fcourse=NULL,*t_focourse=NULL,*t_new_course=NULL,*t_np_c=NULL;
-    course *s_fcourse=NULL,*s_focourse=NULL,*s_new_course=NULL,*s_np_c=NULL;
+    student *fstudent=NULL,*fostudent=NULL,*new_student=NULL,*np_s=NULL;    //  准备建立学生档案链表
+    teacher *fteacher=NULL,*foteacher=NULL,*new_teacher=NULL,*np_t=NULL;    //  准备建立教师档案链表
+    course *t_fcourse=NULL,*t_focourse=NULL,*t_new_course=NULL,*t_np_c=NULL;    // 准备建立教师开设课程链表
+    course *s_fcourse=NULL,*s_focourse=NULL,*s_new_course=NULL,*s_np_c=NULL;    // 准备建立学生选修课程链表
     int i;
     int key;
 
