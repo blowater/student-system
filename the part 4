@@ -1,0 +1,25 @@
+void searchcource(cos *np, char key)
+
+{
+
+	while(np != NULL && np->name !=key)	// 不断搜索下一个节点，直到找到name为止，或者到链表末尾
+
+	{
+
+		np = np->next;
+
+	}
+
+	if (np != NULL)					// 非末尾，即找到
+
+	{
+
+	print_cos(course *np);
+
+	}
+
+	else
+
+		printf("Not Found!\n");
+
+}
