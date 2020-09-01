@@ -1,3 +1,11 @@
+/*Desc: Student system
+    更新了课程信息中的上课时间和上课地点
+
+Author: 
+Date: 2020/9/1
+*/
+
+
 //  学生功能：
 
 //  第一页（刘天放）
@@ -75,12 +83,15 @@ typedef struct course{
     int period;                 //  学时
     char characteristics[10];   //  课程性质
     char teacher[20];           //  开课教师
-    int year;                   //  上课时间（起止时间格式为：“202*-202*学年第*学期第*周”，
-    int semester;
-    int week;
-    int time[10];                   //  上课具体时间段：全天共计10个时间段，早8:00-11:50每50分钟一个时间段；下午1：30-5：20每50分钟一个时间段；晚6：30-8：20没50分钟一个时间段。课间休息均为10分钟。）
-    int building;               //  上课地点（上课地点格式：“楼号-房间号。1表示教一楼，2表示教二楼。房间号为3为数字。）
-    int room;        
+                                //  上课时间（起止时间格式为：“202*-202*学年第*学期第*周”）
+    int year;                   //  year选择范围为1-9
+    int semester;               //  semester选择范围为1-2
+    int week;                   //  week选择范围为1-20
+                                //  上课具体时间段：全天共计10个时间段，早8:00-11:50每50分钟一个时间段；下午1：30-5：20每50分钟一个时间段；晚6：30-8：20没50分钟一个时间段。课间休息均为10分钟。）
+    int time[10];               //  time选择范围为1-10
+                                //  上课地点（上课地点格式：“楼号-房间号。1表示教一楼，2表示教二楼。房间号为3为数字。）
+    int building;               //  楼号
+    int room;                   //  房间号
     int limitation;             //  限制人数（80和100人）
     char ioc[20];               //  "ioc" == "introduction of course"，课程简介
     char iom[20];               //  "iom" == "information of material"，教材信息
