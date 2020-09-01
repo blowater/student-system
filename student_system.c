@@ -93,7 +93,7 @@ typedef struct course{
     int building;               //  Â¥ºÅ
     int room;                   //  ·¿¼äºÅ
     int limitation;             //  ÏŞÖÆÈËÊı£¨80ºÍ100ÈË£©
-    int selected;               //  ¿Î³ÌÒÑÑ¡ÈËÊı
+    int selected;               //  Ñ¡¿ÎÈËÊı
     char ioc[20];               //  "ioc" == "introduction of course"£¬¿Î³Ì¼ò½é
     char iom[20];               //  "iom" == "information of material"£¬½Ì²ÄĞÅÏ¢
 	struct course *next;
@@ -112,7 +112,7 @@ typedef struct student{
 	struct student *next;       
 } student;
 
-//  ½ÌÊ¦Á´±í»ù±¾²Ù×÷
+//  ½ÌÊ¦µµ°¸Á´±í»ù´¡²Ù×÷
 teacher *create_tch(char id[][10],                  //  ´´½¨Ò»¸ö½ÌÊ¦½áµã
                     char department[][10],
                     char name[][20],
@@ -123,7 +123,8 @@ void traversal_tch(teacher *fnode);                 //  ±éÀú²¢´òÓ¡ËùÓĞ½ÌÊ¦½áµã
 teacher *insertBeginning_tch(teacher *fnode, teacher *newnode); //  ²åÈë½ÌÊ¦½áµãÍ·²¿
 void searchcource(course *np, char key);            //  ¿Î³Ì¹ÜÀí£ºa.²éÑ¯ËùÓĞ¿ªÉèµÄ¿Î³Ì¡¢¸ù¾İ¿Î³ÌÃû²éÑ¯
 
-//  ¿Î³ÌÁ´±í»ù´¡²Ù×÷
+
+//  ½ÌÊ¦¿ªÉè¿Î³ÌÁ´±í»ù´¡²Ù×÷
 course *create_cos(char id[][6],                    // ´ÓÒÑÓĞÊı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµã
                     char name[][20],
                     int credit[],
@@ -144,10 +145,15 @@ course *create_cos(char id[][6],                    // ´ÓÒÑÓĞÊı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµ
 course *tch_create_cos(course *fnode);                              //  ½ÌÊ¦ÊÖ¶¯´´½¨¿Î³Ì½áµã
 void print_cos(course *np);                         //  ´òÓ¡Ä³¸ö¿Î³Ì½áµã
 void traversal_cos(course *fnode);                  //  ±éÀú²¢´òÓ¡ËùÓĞ¿Î³Ì
-course *insertBeginning_cos(course *fnode, course *newnode);    //  ²åÈë¿Î³ÌÁ´±íÍ·²¿
-int check_t_course(course *fnode, course *new_node);
+course *insertBeginning_cos(course *fnode, course *newnode);        //  ²åÈë¿Î³ÌÁ´±íÍ·²¿
+int check_t_course(course *fnode, course *new_node);                //  ¼ì²é½ÌÊ¦¿ªÉèĞÂ¿Î³ÌÊÇ·ñ·ûºÏ¹æÔò
 
-//  Ñ§ÉúÁ´±í»ù´¡²Ù×÷
+//  Ñ§ÉúÑ¡ĞŞ¿Î³ÌÁ´±í»ù´¡²Ù×÷
+void select_s_course(course *fnode);                                //  Ñ§ÉúÑ¡¿Î
+int check_s_course(course *fnode, course *new_node);                //  ¼ì²éÑ§ÉúÑ¡ĞŞĞÂ¿Î³ÌÊÇ·ñ·ûºÏ¹æÔò
+
+
+//  Ñ§Éúµµ°¸Á´±í»ù´¡²Ù×÷
 student *create_std(char id[][10],                  //  ´´½¨Ò»¸öÑ§Éú½áµã
                     char department[][10],
                     char major[][10],
