@@ -105,47 +105,88 @@ typedef struct teacher{
 } teacher;
 
 
-student *create_student(char id[10],
-                        char department[10],
-                        char major[10],
-                        char name[10],
-                        char gender[10],
-                        char phone_number[11],
-                        char password[20],
-                        char mailbox[10]);
+student *create_std(char id[][10],
+                        char department[][10],
+                        char major[][10],
+                        char name[][20],
+                        char gender[][10],
+                        char phone_number[][11],
+                        char password[][20],
+                        char mailbox[][10]);
+void print_std(student *np);
+void traversal_std(student *fnode);
+student *insertBegining(student *fnode, student *newnode);
 
 int main()
 {
     // 测试数据
-    char ids[N][10]={"1","2","3","4","5"};
+    char id[N][10]={"1","2","3","4","5"};
     char department[N][10]={"1","2","3","4","5"};
     char major[N][10]={"1","2","3","4","5"};
     char name[N][20]={"1","2","3","4","5"};
     char gender[N][10]={"1","2","1","2","1"};
-    char phone_number[11]={"1","2","3","4","5"};
+    char phone_number[N][11]={"1","2","3","4","5"};
     char password[N][20]={"1","2","3","4","5"};
     char mailbox[N][10]={"1","2","3","4","5"};
 
 
-    student *fnode=NULL,*fonode=NULL,*newnode=NULL,*np=NULL;
+    student *fstudent=NULL,*fostudent=NULL,*new_student=NULL,*np=NULL;
     int i;
     int key;
 
-    
+    for(i=0;i<5;i++)
+    {
+        new_student = create_std(id,department,major,name,gender,phone_number,password,mailbox);
+        fstudent = insertBegining(fstudent, new_student);
+    }
+    traversal_std(fstudent);
+
+    return 0;
 }
 
-student *create_student(char id[10],
-                        char department[10],
-                        char major[10],
-                        char name[10],
-                        char gender[10],
-                        char phone_number[11],
-                        char password[20],
-                        char mailbox[10])
+student *create_std(char id[][10],
+                        char department[][10],
+                        char major[][10],
+                        char name[][20],
+                        char gender[][10],
+                        char phone_number[][11],
+                        char password[][20],
+                        char mailbox[][10])  
 {
+    static int i = 0;
     student *np;
     np = (student *) malloc(sizeof(student));   // 动态分配内存，存放学生数据
-    // printf("Please input id, department, major, name, gender, phone_number, password, mailbox: \n");
-    // scanf("%s", &np->)
-    
+    strcpy(np->id, id[i]);
+    strcpy(np->department, department[i]);
+    strcpy(np->major, major[i]);
+    strcpy(np->name, name[i]);
+    strcpy(np->gender, gender[i]);
+    strcpy(np->phone_number, phone_number[i]);
+    strcpy(np->password, password[i]);
+    strcpy(np->mailbox, mailbox[i]);
+    np->next = NULL;
+    i++;
+    return np;
+}
+
+void print_std(student *np)
+{
+    printf("ID: %s / Department: %s / Major: %s / Name: %s / Gender: %s / Phone number: %s / Password: %s / Mailbox: %s\n", np->id, np->department, np->major, np->name, np->gender, np->phone_number, np->password, np->mailbox);
+}
+
+void traversal_std(student *fnode)
+{
+    student *np = fnode;
+    while(np != NULL)
+    {
+        print_std(np);
+        np = np->next;
+    }
+}
+
+student *insertBegining(student *fnode, student *newnode)
+{
+    newnode->next = fnode;
+    fnode = newnode;
+    return fnode;
 }
