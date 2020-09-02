@@ -148,7 +148,8 @@ void traversal_cos(course *fnode);                  //  遍历并打印所有课
 course *insertBeginning_cos(course *fnode, course *newnode);        //  插入课程链表头部
 int tch_check_course(course *fnode, course *new_node);                //  检查教师开设新课程是否符合规则
 course *search_cos(course *np, char key[20]);                        //  根据ID搜索课程
-void change_the_course(course*np, char key)                                //改变选课信息
+void change_the_course(course*np, char key)  ;                              //改变选课信
+void delete_course(course*np , char key);  //删除选课
 
 //  学生选修课程链表基础操作
 void std_select_cos(course *s_fnode, course *t_fnode);             //  学生选课
@@ -567,4 +568,14 @@ void change_the_course(course*np, char key)    //改变选课信息
 		printf("已有人选该课");
 
 }
-
+void delete_course(course*np , char key)  //删除选课
+{
+	np = fcourse;
+	printf("请输入你要删除的课程名")；
+	scanf ("%c",&key);
+	while(np->name != key&&np != NULL)
+	{
+		np = np->next;
+	}
+	free(np);
+}
