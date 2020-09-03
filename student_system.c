@@ -1,5 +1,5 @@
 /*Desc: Student system
-    ¸üĞÂÁË¿Î³ÌĞÅÏ¢ÖĞµÄÉÏ¿ÎÊ±¼äºÍÉÏ¿ÎµØµã
+    Ñ§ÉúÑ¡¿Î£¬Ìí¼Ó¿Î³Ì
 
 Author: 
 Date: 2020/9/1
@@ -76,12 +76,13 @@ typedef struct teacher{
 
 //  ¿Î³Ì½á¹¹Ìå                                                
 typedef struct course{
-	char id[6];                 //  ¿Î³Ì±àºÅ£¨6Î»Êı×Ö£©
+	char id[7];                 //  ¿Î³Ì±àºÅ£¨6Î»Êı×Ö£©
 	char name[20];              //  ¿Î³ÌÃû³Æ
     int credit;                 //  Ñ§·Ö£¨¿ÉÈ¡·¶Î§Êı×Ö1-4£©
     int period;                 //  Ñ§Ê±
     char characteristics[10];   //  ¿Î³ÌĞÔÖÊ
     char teacher[20];           //  ¿ª¿Î½ÌÊ¦
+    char department[20];        //  ¿ª¿ÎÑ§Ôº
                                 //  ÉÏ¿ÎÊ±¼ä£¨ÆğÖ¹Ê±¼ä¸ñÊ½Îª£º¡°202*-202*Ñ§ÄêµÚ*Ñ§ÆÚµÚ*ÖÜ¡±£©
     int year1;                  //  yearÑ¡Ôñ·¶Î§Îª0-9
     int year2;
@@ -125,12 +126,13 @@ teacher *insertBeginning_tch(teacher *fnode, teacher *newnode); //  ²åÈë½ÌÊ¦½áµã
 
 
 //  ½ÌÊ¦¿ªÉè¿Î³ÌÁ´±í»ù´¡²Ù×÷
-course *create_cos(char id[][6],                    // ´ÓÔ­Ê¼Êı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµã
+course *create_cos(char id[][7],                    // ´ÓÔ­Ê¼Êı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµã
                     char name[][20],
                     int credit[],
                     int period[],
                     char characteritics[][10],
                     char teacher[][20],
+                    char department[][20],
                     int year1[],
                     int year2[],
                     int semester[],
@@ -145,14 +147,14 @@ course *create_cos(char id[][6],                    // ´ÓÔ­Ê¼Êı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµ
 course *tch_create_cos(course *t_fcourse);                              //  ÊÖ¶¯´´½¨½ÌÊ¦¿ªÉè¿Î³Ì½áµã
 void print_cos(course *np);                         //  ´òÓ¡Ä³¸ö¿Î³Ì½áµã
 void traversal_cos(course *fnode);                  //  ±éÀú²¢´òÓ¡ËùÓĞ¿Î³Ì
-course *insertBeginning_cos(course *fnode, course *newnode);        //  ²åÈë¿Î³ÌÁ´±íÍ·²¿
+course *insertBeginning_cos(course *fnode, course *newnode);            //  ²åÈë¿Î³ÌÁ´±íÍ·²¿
 int tch_check_course(course *fnode, course *new_node);                //  ¼ì²é½ÌÊ¦¿ªÉèĞÂ¿Î³ÌÊÇ·ñ·ûºÏ¹æÔò
 course *search_cos(course *np, char key[20]);                        //  ¸ù¾İIDËÑË÷¿Î³Ì
 /*  void searchcource(course *np, char key);             ¿Î³Ì¹ÜÀí£ºa.²éÑ¯ËùÓĞ¿ªÉèµÄ¿Î³Ì¡¢¸ù¾İ¿Î³ÌÃû²éÑ¯*/
 
 //  Ñ§ÉúÑ¡ĞŞ¿Î³ÌÁ´±í»ù´¡²Ù×÷
-void std_select_cos(course *s_fnode, course *t_fnode);             //  Ñ§ÉúÑ¡¿Î
-int std_check_cos(course *fnode, course *new_node);                //  ¼ì²éÑ§ÉúÑ¡ĞŞĞÂ¿Î³ÌÊÇ·ñ·ûºÏ¹æÔò
+course *std_select_cos(course *s_fnode, course *t_fnode);           //  µÚÒ»Ò³2.Ñ§ÉúÑ¡¿Î
+int std_check_cos(course *fnode, course *new_node);                 //  ¼ì²éÑ§ÉúÑ¡ĞŞĞÂ¿Î³ÌÊÇ·ñ·ûºÏ¹æÔò
 course *std_create_cos(course *np);                //  ¸´ÖÆÑ§ÉúÑ¡ĞŞ¿Î³Ì½áµã
 
 //  Ñ§Éúµµ°¸Á´±í»ù´¡²Ù×÷
@@ -167,7 +169,12 @@ student *create_std(char id[][10],                  //  ´´½¨Ò»¸öÑ§Éú½áµã
 void print_std(student *np);                        //  ´òÓ¡Ä³¸öÑ§Éú½áµã
 void traversal_std(student *fnode);                 //  ±éÀú²¢´òÓ¡ËùÓĞÑ§Éú½áµã
 student *insertBeginning_std(student *fnode, student *newnode);  //  ²åÈëÑ§ÉúÁ´±íÍ·²¿
-
+//  Ñ§Éú¹¦ÄÜ£º
+//      2.Ñ§ÉúÑ¡¿Î
+course *std_select_cos(course *s_fnode, course *t_fnode);     
+//  ½ÌÊ¦¹¦ÄÜ£º
+//      5.Ìí¼Ó¿Î³Ì
+course *tch_add_cos(course *t_course); 
 int main()
 {
     // Ñ§Éú²âÊÔÊı¾İ
@@ -186,12 +193,13 @@ int main()
     char t_mailbox[N][10]={"1","2","3","4","5"};
     char t_password[N][20]={"1","2","3","4","5"};
     //  ¿Î³Ì²âÊÔÊı¾İ
-    char c_id[N][6]={"1","2","3","4","5"};
+    char c_id[N][7]={"1","2","3","4","5"};
     char c_name[N][20]={"1","2","3","4","5"};  
     int c_credit[N]={1,2,3,4,5};
     int c_period[N]={1,2,3,4,5}; 
     char c_characteristics[N][10]={"1","2","3","4","5"};  
     char c_teacher[N][20]={"1","2","3","4","5"};  
+    char c_department[N][20]={"1","2","3","4","5"};
     int c_year1[N]={1,2,3,4,5}; 
     int c_year2[N]={1,2,3,4,5}; 
     int c_semester[N]={1,2,3,4,5};
@@ -199,7 +207,7 @@ int main()
     int c_time[N]={1,2,3,4,5};
     int c_building[N]={1,2,3,4,5};
     int c_room[N]={1,2,3,4,5};
-    int c_limitation[N]={1,2,3,4,5};
+    int c_limitation[N]={10,20,30,40,50};
     int c_selected[N]={1,2,3,4,5};
     char c_ioc[N][20]={"1","2","3","4","5"}; 
     char c_iom[N][20]={"1","2","3","4","5"};  
@@ -231,10 +239,15 @@ int main()
         t_new_course = create_cos(c_id,c_name,c_credit,c_period,c_characteristics,c_teacher,c_year1,c_year2,c_semester,c_week,c_time,c_building,c_room,c_limitation,c_selected,c_ioc,c_iom);
         t_fcourse = insertBeginning_cos(t_fcourse, t_new_course);
     }
-    traversal_cos(t_new_course);
+    /*
+    traversal_cos(t_fcourse);
     t_new_course = tch_create_cos(t_fcourse);
     t_fcourse = insertBeginning_cos(t_fcourse, t_new_course); 
-    traversal_cos(t_new_course);
+    traversal_cos(t_fcourse);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+    */
+
+    s_fcourse = std_select_cos(s_fcourse, t_fcourse);
+
     return 0;
 }
 
@@ -285,12 +298,13 @@ student *insertBeginning_std(student *fnode, student *newnode)  //  ²åÈëÑ§ÉúÁ´±í
     fnode = newnode;
     return fnode;
 }
-course *create_cos(char id[][6],                    // ´ÓÒÑÓĞÊı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµã
+course *create_cos(char id[][7],                    // ´ÓÒÑÓĞÊı¾İµ¼ÈëÒ»¸ö¿Î³Ì½áµã
                     char name[][20],
                     int credit[],
                     int period[],
                     char characteristics[][10],
                     char teacher[][20],
+                    char department[N][20],
                     int year1[],
                     int year2[],
                     int semester[],
@@ -343,6 +357,8 @@ course *tch_create_cos(course *t_fcourse)                    // ½ÌÊ¦ÊÖ¶¯´´½¨¿Î³Ì
     scanf("%s", np->characteristics);
     printf("ÇëÊäÈë¿Î³Ì½ÌÊ¦Ãû³Æ£º\n");
     scanf("%s", np->teacher);
+    printf("ÇëÊäÈë¿ª¿ÎÑ§Ôº£º\n");
+    gets(np->department);
     printf("¿Î³ÌÆğÊ¼ÓÚ202*Ñ§Äê£¿\n");
     scanf("%d", &np->year1);
     printf("¿Î³Ì½áÊøÓÚ202*Ñ§Äê£¿\n");
@@ -405,10 +421,11 @@ course *tch_create_cos(course *t_fcourse)                    // ½ÌÊ¦ÊÖ¶¯´´½¨¿Î³Ì
 
 void print_cos(course *np)  //  ´òÓ¡Ä³¸ö¿Î³Ì½áµã
 {
-    printf("ID: %s / Name: %s / Credit: %d / Period: %d / Characteristics: %s / Teacher: %s ", np->id, np->name, np->credit, np->period, np->characteristics, np->teacher);
-    printf("Time: 202%d-202%dÑ§ÄêµÚ%dÑ§ÆÚµÚ%dÖÜ ",np->year1, np->year2, np->semester, np->week, np->time);
-    printf("Place: ½Ì%dÂ¥-%d ", np->building, np->room);
-    printf("Limitation: %d / Selected: %d ", np->limitation, np->selected);
+    printf("ID: %s / Name: %s / Credit: %d / Period: %d / Characteristics: %s / Teacher: %s / ", np->id, np->name, np->credit, np->period, np->characteristics, np->teacher);
+    printf("Department: %s / ", np->department);
+    printf("Time: 202%d-202%dÑ§ÄêµÚ%dÑ§ÆÚµÚ%dÖÜ / ", np->year1, np->year2, np->semester, np->week, np->time);
+    printf("Place: ½Ì%dÂ¥-%d / ", np->building, np->room);
+    printf("Limitation: %d / Selected: %d / ", np->limitation, np->selected);
     printf("Introduction of course: %s / Information of material: %s \n", np->ioc, np->iom);
 }
 void traversal_cos(course *fnode)   //  ±éÀú²¢´òÓ¡ËùÓĞ¿Î³Ì
@@ -478,6 +495,7 @@ course *std_create_cos(course *np)               //  ´´½¨Ñ§ÉúÑ¡ĞŞ¿Î³Ì½áµã
     new_course->period = np->period;
     strcpy(new_course->characteristics, np->characteristics);
     strcpy(new_course->teacher, np->teacher);
+    strcpy(new_course->department, np->department);
     new_course->year1 = np->year1;
     new_course->year2 = np->year2;
     new_course->semester = np->semester;
@@ -494,7 +512,7 @@ course *std_create_cos(course *np)               //  ´´½¨Ñ§ÉúÑ¡ĞŞ¿Î³Ì½áµã
     return new_course;
 }
 
-course *search_cos(course *np, char key[20])             //¸ù¾İIDËÑË÷¿Î³Ì                                           
+course *search_cos(course *np, char key[20])             // ¸ù¾İIDËÑË÷¿Î³Ì                                           
 {
 	while(np != NULL && strcmp(np->id, key) != 0)	// ²»¶ÏËÑË÷ÏÂÒ»¸ö½Úµã£¬Ö±µ½ÕÒµ½idÎªÖ¹£¬»òÕßµ½Á´±íÄ©Î²
 	{
@@ -512,11 +530,12 @@ course *search_cos(course *np, char key[20])             //¸ù¾İIDËÑË÷¿Î³Ì
     return NULL;
 }
 
-void std_select_cos(course *s_fcourse, course *t_fcourse)  //  Ñ§ÉúÑ¡¿Î
+course *std_select_cos(course *s_fcourse, course *t_fcourse)  //  Ñ§ÉúÑ¡¿Î
 {
     course *np, *new_course;
     char key[20];
     traversal_cos(t_fcourse);
+    traversal_cos(s_fcourse);
     printf("ÇëÊäÈë¸ĞĞËÈ¤¿Î³ÌµÄID£º\n");
     scanf("%s", &key);
     np = search_cos(t_fcourse, key);
@@ -540,6 +559,8 @@ void std_select_cos(course *s_fcourse, course *t_fcourse)  //  Ñ§ÉúÑ¡¿Î
     {
         printf("³¬³öÒ»ÃûÑ§Éúµ¥Ñ§ÆÚÑ¡ĞŞ¿Î³ÌÉÏÏŞÊı£¨3£©\n");
     }
+    traversal_cos(s_fcourse);
+    return s_fcourse;
 }
 
 int std_check_cos(course *fnode, course *new_node)                //  ¼ì²éÑ§ÉúÑ¡ĞŞĞÂ¿Î³ÌÊÇ·ñ·ûºÏ¹æÔò
@@ -547,7 +568,7 @@ int std_check_cos(course *fnode, course *new_node)                //  ¼ì²éÑ§ÉúÑ¡
     course *np;
     np = fnode;
     int i=0;
-    if (np->selected > np->limitation)
+    if (new_node->selected > new_node->limitation)
     {
         return 2;
     }
@@ -616,4 +637,12 @@ teacher *insertBeginning_tch(teacher *fnode, teacher *newnode)  //  ²åÈë½ÌÊ¦Á´±í
     fnode = newnode;
     return fnode;
 } 
-
+ course *tch_add_cos(course *t_fcourse)     //  ½ÌÊ¦¹¦ÄÜ¡ª¡ªÌí¼Ó¿Î³Ì
+{
+    course *t_new_course;
+    traversal_cos(t_fcourse);
+    t_new_course = tch_create_cos(t_fcourse);
+    t_fcourse = insertBeginning_cos(t_fcourse, t_new_course); 
+    traversal_cos(t_fcourse);
+    return t_fcourse;
+}
