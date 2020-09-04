@@ -724,7 +724,6 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
             {
                 //  学生选课
                 std_select_cos(s_fcourse, t_fcourse);
-                traversal_cos(s_fcourse);
             }
             else if (choice == 2)
             {
@@ -775,8 +774,7 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
             else if (choice == 4)
             {
                 //  添加课程
-                tch_add_cos(t_fcourse);  
-                traversal_cos(t_fcourse);  
+                tch_add_cos(t_fcourse);   
             }
             else if (choice == 5)
             {
