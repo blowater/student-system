@@ -123,6 +123,7 @@ teacher *create_tch(char id[][10],                                      //  创�
 void print_tch(teacher *np);                                            //  打印某个教师结点
 void traversal_tch(teacher *fnode);                                     //  遍历并打印所有教师结点
 teacher *insertBeginning_tch(teacher *fnode, teacher *newnode);         //  插入教师结点头部
+void delete_course(course*np ,course*nb, char key);                     //删除选课 
 
 
 
@@ -650,4 +651,17 @@ teacher *insertBeginning_tch(teacher *fnode, teacher *newnode)  //  插入教师
     t_fcourse = insertBeginning_cos(t_fcourse, t_new_course); 
     traversal_cos(t_fcourse);
     return t_fcourse;
+}
+void delete_course(course*np ,course*nb, char key)  //删除选课 
+{ 
+	np = fcourse; 
+	printf("请输入你要删除的课程名")； 
+	scanf ("%c",&key); 
+	while(np->next->name != key&&np != NULL) 
+	{ 
+		np = np->next; 
+	} 
+	nb = np->next;
+	np->next = nb>next;
+	free(nb); 
 }
