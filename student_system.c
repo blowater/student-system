@@ -124,6 +124,7 @@ void print_tch(teacher *np);                                            //  打�
 void traversal_tch(teacher *fnode);                                     //  遍历并打印所有教师结点
 teacher *insertBeginning_tch(teacher *fnode, teacher *newnode);         //  插入教师结点头部
 void delete_course(course*np ,course*nb, char key);                     //删除选课 
+void change_t_i(teacher*foteacher, char key);                           //改变邮箱密码
 
 
 
@@ -701,3 +702,25 @@ void delete_course(course*np ,course*nb, char key)  //删除选课
 	} 
 	else 
 		printf("已有人选该课"); 
+void change_t_i(teacher*foteacher, char key) 
+{
+	printf("请输入你的姓名。\n");
+	scanf("%c",&key);
+	while(teacher->name!=key&&teaher!=NULL)
+	{
+		teacher=teacher->next;
+	 } 
+	 if(teacher!=NULL)
+	 {
+	 	printf("请输入你的新邮箱.\n");
+		 scanf("%c",&key);
+		 teacher->mailbox=key;
+		 printf("请输入你的新密码.\n"); 
+		  scanf("%c",&key);
+		  teacher->password=key;
+	 }
+	 else
+	 {
+	 	printf("未找到。"); 
+	  } 
+}
