@@ -152,7 +152,7 @@ void traversal_cos(course *fnode);                                      //  遍�
 course *insertBeginning_cos(course *fnode, course *newnode);            //  插入课程链表头部
 int tch_check_course(course *fnode, course *new_node);                  //  检查教师开设新课程是否符合规则
 course *search_cos(course *np, char key[20]);                           //  根据ID搜索课程
-/*  void searchcource(course *np, char key);             课程管理：a.查询所有开设的课程、根据课程名查询*/
+void delete_course(course*np ,course*nb, char key);  //删除选课
 
 //  学生选修课程链表基础操作
 course *std_select_cos(course *s_fnode, course *t_fnode);               //  第一页2.学生选课
@@ -665,3 +665,39 @@ void delete_course(course*np ,course*nb, char key)  //删除选课
 	np->next = nb>next;
 	free(nb); 
 }
+
+{ 
+	np = fcourse; 
+	printf("请输入你寻找的课程名。\n"); 
+	scanf("%c",&key); 
+	while(np != NULL && np->name != key)	
+	{ 
+		np = np->next; 
+	} 
+	if (np->selected==0)					 
+	{ 
+     printf("修改后的教材"); 
+	scanf("%c",&key);  
+	np->iom = key; 
+	 printf("修改后的课程简介"); 
+	scanf("%c",&key);  
+	np->iom = key; 
+	printf("请输入你的新课程人数  a.80  b.100"); 
+	scanf("%c",&key); 
+	while(key != a&&key != b) 
+	{ 
+		printf("错误，请重新输入");  
+			scanf("%c",&key); 
+	} 
+	 if(key=a) 
+	 { 
+	 	np->limitation = 80; 
+	 	printf("已更改为80."); 
+	  }  
+     else 
+     { 
+     	np->limitation = 100; 
+     	prinf("已更改为100") ;  
+	} 
+	else 
+		printf("已有人选该课"); 
