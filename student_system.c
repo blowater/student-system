@@ -9,7 +9,7 @@ Date: 2020/9/1
 
 //  第一页（刘天放）
 //  1.登陆：输入学号和密码登陆系统。
-//  2.学生选课....：根据系统提供的课程进行浏览并可选择感兴趣的课程。
+//  2.学生选课：根据系统提供的课程进行浏览并可选择感兴趣的课程。
 //          a.同一名学生的两门或多门课程之间时间不能冲突
 //          b.规定一个学生一个学期最多能选3门课
 //          c.每门课程选课人数不能超过限制人数
@@ -109,7 +109,7 @@ typedef struct student{
 	char phone_number[11];      //  电话（11位数字）
 	char password[20];          //  密码
 	char mailbox[10];           //  邮箱（符合***@***.***的规范）
-    course *s_fcourse;          //  学生选课链表头指针
+    course *s_fcourse;          //  学生已选课程链表头指针
 	struct student *next;       
 } student;
 
@@ -150,10 +150,9 @@ void traversal_cos(course *fnode);                                      //  遍历
 course *insertBeginning_cos(course *fnode, course *newnode);            //  插入课程链表头部
 int tch_check_course(course *fnode, course *new_node);                  //  检查教师开设新课程是否符合规则
 course *search_cos(course *np, char key[20]);                           //  根据ID搜索课程
-/*  void searchcource(course *np, char key);             课程管理：a.查询所有开设的课程、根据课程名查询*/
+
 
 //  学生选修课程链表基础操作
-course *std_select_cos(course *s_fcourse, course *t_fcourse);               //  第一页2.学生选课
 int std_check_cos(course *fnode, course *new_node);                     //  检查学生选修新课程是否符合规则
 course *std_create_cos(course *np);                                     //  复制学生选修课程结点
 
@@ -171,13 +170,15 @@ void traversal_std(student *fnode);                                     //  遍历
 student *insertBeginning_std(student *fnode, student *newnode);         //  插入学生链表头部
 //  学生功能：
 //      1.登陆
-void menu1(student *fstudent);
-void menu2();
-void keydown();
-int checkAccountandPassword(struct student *np);//学生账号密码检验
+void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fcourse);
+void studentmenu1(student *fstudent);
+int std_checkAccountandPassword(student *np);                    //  学生账号密码检验
 //      2.学生选课
 course *std_select_cos(course *s_fcourse, course *t_fcourse);     
 //  教师功能：
+//      1.登陆
+void teachermenu1(teacher *fteacher);
+int tch_checkAccountandPassword(teacher *np);                    //  教师账号密码检验
 //      5.添加课程
 course *tch_add_cos(course *t_course); 
 
@@ -280,9 +281,30 @@ int main()
     char t_name[N][20]={"1","2","3","4","5"};
     char t_mailbox[N][10]={"1","2","3","4","5"};
     char t_password[N][20]={"1","2","3","4","5"};
+    //  课程测试数据
+    char c_id[N][7]={"1","2","3","4","5"};
+    char c_name[N][20]={"1","2","3","4","5"};  
+    int c_credit[N]={1,2,3,4,5};
+    int c_period[N]={1,2,3,4,5}; 
+    char c_characteristics[N][10]={"1","2","3","4","5"};  
+    char c_teacher[N][20]={"1","2","3","4","5"};  
+    char c_department[N][20]={"1","2","3","4","5"};
+    int c_year1[N]={1,2,3,4,5}; 
+    int c_year2[N]={1,2,3,4,5}; 
+    int c_semester[N]={1,2,3,4,5};
+    int c_week[N]={1,2,3,4,5};
+    int c_time[N]={1,2,3,4,5};
+    int c_building[N]={1,2,3,4,5};
+    int c_room[N]={1,2,3,4,5};
+    int c_limitation[N]={10,20,30,40,50};
+    int c_selected[N]={1,2,3,4,5};
+    char c_ioc[N][20]={"1","2","3","4","5"}; 
+    char c_iom[N][20]={"1","2","3","4","5"};  
 
     teacher *fteacher=NULL, *new_teacher=NULL;
     student *fstudent=NULL, *new_student=NULL;
+    course *t_fcourse=NULL,*t_focourse=NULL,*t_new_course=NULL,*t_np_c=NULL;    // 准备建立教师开设课程链表
+    course *s_fcourse=NULL,*s_focourse=NULL,*s_new_course=NULL,*s_np_c=NULL;    // 准备建立学生选修课程链表
     
     for(i=0;i<5;i++)
     {
@@ -297,168 +319,55 @@ int main()
         fstudent = insertBeginning_std(fstudent, new_student);
     }
     traversal_std(fstudent);
+    for(i=0;i<5;i++)
+    {
+        t_new_course = create_cos(c_id,c_name,c_credit,c_period,c_characteristics,c_teacher,c_department,c_year1,c_year2,c_semester,c_week,c_time,c_building,c_room,c_limitation,c_selected,c_ioc,c_iom);
+        t_fcourse = insertBeginning_cos(t_fcourse, t_new_course);
+    }
+    traversal_cos(t_fcourse);
 
-	menu1(fstudent);
+	menu1(fstudent,fteacher,t_fcourse,s_fcourse);
 
 	return 0; 
 
 }
-
-student *create_std(char id[][10],
+teacher *create_tch(char id[][10],                      //  创建一个教师结点
                     char department[][10],
-                    char major[][10],
                     char name[][20],
-                    char gender[][10],
-                    char phone_number[][11],
-                    char password[][20],
-                    char mailbox[][10])  
+                    char mailbox[][10],
+                    char password[][20])
 {
     static int i = 0;
-    student *np;
-    np = (student *) malloc(sizeof(student));   // 动态分配内存，存放学生数据
+    teacher *np;
+    np = (teacher *) malloc(sizeof(teacher));
     strcpy(np->id, id[i]);
     strcpy(np->department, department[i]);
-    strcpy(np->major, major[i]);
     strcpy(np->name, name[i]);
-    strcpy(np->gender, gender[i]);
-    strcpy(np->phone_number, phone_number[i]);
     strcpy(np->password, password[i]);
     strcpy(np->mailbox, mailbox[i]);
-    np->s_fcourse = (course *) malloc(sizeof(course));  //  创建学生选课链表头结点
-    np->s_fcourse->next = NULL;
     np->next = NULL;
     i++;
     return np;
 }
-
-void print_std(student *np) //  打印某个学生结点
+void print_tch(teacher *np) //  打印某个教师结点
 {
-    printf("ID: %s / Department: %s / Major: %s / Name: %s / Gender: %s / Phone number: %s / Password: %s / Mailbox: %s\n", np->id, np->department, np->major, np->name, np->gender, np->phone_number, np->password, np->mailbox);
-}
-
-void traversal_std(student *fnode)  //  遍历并打印所有学生结点
+    printf("ID: %s / Department: %s / Name: %s / Mailbox: %s / Password: %s\n", np->id, np->department, np->name, np->mailbox, np->password);
+}                        
+void traversal_tch(teacher *fnode)  //  遍历并打印所有教师
 {
-    student *np = fnode;
+    teacher *np = fnode; 
     while(np != NULL)
     {
-        print_std(np);
+        print_tch(np);
         np = np->next;
     }
-}
-
-student *insertBeginning_std(student *fnode, student *newnode)  //  插入学生链表头部  
+}               
+teacher *insertBeginning_tch(teacher *fnode, teacher *newnode)  //  插入教师链表头部
 {
-    newnode->next = fnode;
+    newnode->next = fnode; 
     fnode = newnode;
     return fnode;
-}
-
-
-
-
-//  学生功能
-int checkAccountandPassword(struct student *np)
-{
-	char id[10],password[20];
-	printf("输入你的学号:\n");
-	scanf("%s", &id);
-	printf("输入你的密码:\n");
-    scanf("%s", &password);
-	while(np!=NULL)
-	{
-		if(strcmp(id,np->id)!=0)
-		{
-			np=np->next;
-		}
-        else if (strcmp(id,np->id) == 0)
-        {
-            if(strcmp(password,np->password) == 0)
-		    {
-			    printf("登陆成功！\n");
-                return 1;
-		    }
-            else
-            {
-                printf("密码错误\n");
-                return 0;
-            }
-        }
-		else
-		{
-			printf("学号查询不到\n");
-		}
-	}
-    return 0;
-	
-}
-void menu1(student *fstudent)
-{
-    int choice=0;
-	printf("--------[选课系统]--------\n");
-	printf("\t1.学生登陆\n");
-	printf("\t2.教师登录\n");
-	printf("\t3.退出系统\n");
-	printf("--------------------------\n");
-    int flag;
-	scanf("%d", &choice);
-	if (choice == 1)
-	{
-		printf("--------[学生登录]------\n");
-		flag = checkAccountandPassword(fstudent);
-        if (flag == 1)
-        {
-            menu2();
-        }
-        else
-	    {
-            menu1(fstudent);
-	    }   
-	}
-    else if (choice == 2)
-	{
-		printf("--------[教师登录]------\n");
-	}
-}
-
-void menu2()
-{
-	printf("--------[学生功能]--------\n");
-	printf("\t1.学生开始选课\n");  
-	printf("\t2.查询课程信息\n");
-	printf("\t3.查询选课结果\n");
-	printf("\t4.删除选课结果\n");
-	printf("\t5.个人信息管理\n");
-	printf("\t6.返回上级菜单\n");
-	printf("--------------------------\n");
-
-}
-void keydown()
-{
-	int choice = 0;
-	scanf("%d",&choice);
-	switch(choice)
-	{
-			case 1:
-		printf("--------[学生登录]------\n");
-		// checkAccountandPassword(缺一个首地址);
-		break;
-	case 2:
-		printf("--------[教师登录]------\n");
-		break;
-	case 3:
-		printf("正常退出");
-		system("pause");
-		exit(0);
-		break;
-	default:
-		printf("错误，重新输入\n");
-		break;
-	}
 } 
-
-
-
-
 course *create_cos(char id[][7],                    // 从已有数据导入一个课程结点
                     char name[][20],
                     int credit[],
@@ -520,9 +429,17 @@ course *tch_create_cos(course *t_fcourse)                    // 教师手动创建课程
     scanf("%s", np->teacher);
     printf("请输入开课学院：\n");
     gets(np->department);
-    printf("课程起始于202*学年？\n");
+    printf("课程起始于\n");
+    printf("202*学年？\n");
     scanf("%d", &np->year1);
-    printf("课程结束于202*学年？\n");
+    printf("第*学期？\n");
+    printf("1.第一学期\n");
+    printf("2.第二学期\n");
+    scanf("%d", &np->semester);
+    printf("第*周？\n");
+    scanf("%d", &np->week);
+    printf("课程结束于\n");
+    printf("202*学年？\n");
     scanf("%d", &np->year2);
     printf("第*学期？\n");
     printf("1.第一学期\n");
@@ -582,12 +499,13 @@ course *tch_create_cos(course *t_fcourse)                    // 教师手动创建课程
 
 void print_cos(course *np)  //  打印某个课程结点
 {
-    printf("ID: %s / Name: %s / Credit: %d / Period: %d / Characteristics: %s / Teacher: %s / ", np->id, np->name, np->credit, np->period, np->characteristics, np->teacher);
-    printf("Department: %s / ", np->department);
-    printf("Time: 202%d-202%d学年第%d学期第%d周 / ", np->year1, np->year2, np->semester, np->week, np->time);
-    printf("Place: 教%d楼-%d / ", np->building, np->room);
-    printf("Limitation: %d / Selected: %d / ", np->limitation, np->selected);
-    printf("Introduction of course: %s / Information of material: %s \n", np->ioc, np->iom);
+    printf("课程编号: %s / 课程名称: %s / 学分: %d / 学时: %d / 课程性质: %s / 开课老师: %s / ", np->id, np->name, np->credit, np->period, np->characteristics, np->teacher);
+    printf("开课学院: %s / ", np->department);
+    printf("课程起始于：202%d-202%d学年第%d学期第%d周 / ", np->year1, np->year2, np->semester, np->week, np->time);
+    printf("课程结束于：202%d-202%d学年第%d学期第%d周 / ", np->year1, np->year2, np->semester, np->week, np->time);
+    printf("上课地点: 教%d楼-%d / ", np->building, np->room);
+    printf("限制人数: %d / 选课人数: %d / ", np->limitation, np->selected);
+    printf("课程简介: %s / 教材信息: %s \n", np->ioc, np->iom);
 }
 void traversal_cos(course *fnode)   //  遍历并打印所有课程
 {
@@ -645,33 +563,6 @@ int tch_check_course(course *t_fcourse, course *new_node)
     return 0;
 }
 
-course *std_create_cos(course *np)               //  创建学生选修课程结点
-{
-    course *new_course;
-
-    new_course = (course *) malloc(sizeof(course));
-    strcpy(new_course->id, np->id);
-    strcpy(new_course->name, np->name);
-    new_course->credit = np->credit;
-    new_course->period = np->period;
-    strcpy(new_course->characteristics, np->characteristics);
-    strcpy(new_course->teacher, np->teacher);
-    strcpy(new_course->department, np->department);
-    new_course->year1 = np->year1;
-    new_course->year2 = np->year2;
-    new_course->semester = np->semester;
-    new_course->week = np->week;
-    new_course->time = np->time;
-    new_course->building = np->building;
-    new_course->room = np->room;
-    new_course->limitation = np->limitation;
-    new_course->selected = np->selected;
-    strcpy(new_course->ioc, np->ioc);
-    strcpy(new_course->iom, np->iom);
-
-    new_course->next = NULL;
-    return new_course;
-}
 
 course *search_cos(course *np, char key[20])             // 根据ID搜索课程                                           
 {
@@ -690,43 +581,6 @@ course *search_cos(course *np, char key[20])             // 根据ID搜索课程
     }   
     return NULL;
 }
-
-course *std_select_cos(course *s_fcourse, course *t_fcourse)  //  学生选课
-{
-    course *np, *new_course;
-    char key[20];
-    traversal_cos(t_fcourse);
-    traversal_cos(s_fcourse);
-    printf("请输入感兴趣课程的ID：\n");
-    scanf("%s", &key);
-    np = search_cos(t_fcourse, key);
-    np->selected++;
-    int a=0;
-    a = std_check_cos(s_fcourse, np);
-    if (a == 0)
-    {
-        new_course = std_create_cos(np);
-        s_fcourse = insertBeginning_cos(s_fcourse, new_course); //  插入课程链表头部
-    }
-    else if (a == 1)
-    {
-        printf("课程时间与已选修课程时间冲突\n");
-        np->selected--;
-    }
-    else if (a == 2)
-    {
-        printf("课程人满\n");
-        np->selected--;
-    }
-    else if (a == 3)
-    {
-        printf("超出一名学生单学期选修课程上限数（3）\n");
-        np->selected--;
-    }
-    traversal_cos(s_fcourse);
-    return s_fcourse;
-}
-
 int std_check_cos(course *fnode, course *new_node)                //  检查学生选修新课程是否符合规则
 {
     course *np;
@@ -763,45 +617,309 @@ int std_check_cos(course *fnode, course *new_node)                //  检查学生选
     }
     return 0;
 }
+course *std_create_cos(course *np)               //  创建学生选修课程结点
+{
+    course *new_course;
 
-teacher *create_tch(char id[][10],                      //  创建一个教师结点
+    new_course = (course *) malloc(sizeof(course));
+    strcpy(new_course->id, np->id);
+    strcpy(new_course->name, np->name);
+    new_course->credit = np->credit;
+    new_course->period = np->period;
+    strcpy(new_course->characteristics, np->characteristics);
+    strcpy(new_course->teacher, np->teacher);
+    strcpy(new_course->department, np->department);
+    new_course->year1 = np->year1;
+    new_course->year2 = np->year2;
+    new_course->semester = np->semester;
+    new_course->week = np->week;
+    new_course->time = np->time;
+    new_course->building = np->building;
+    new_course->room = np->room;
+    new_course->limitation = np->limitation;
+    new_course->selected = np->selected;
+    strcpy(new_course->ioc, np->ioc);
+    strcpy(new_course->iom, np->iom);
+
+    new_course->next = NULL;
+    return new_course;
+}
+
+student *create_std(char id[][10],
                     char department[][10],
+                    char major[][10],
                     char name[][20],
-                    char mailbox[][10],
-                    char password[][20])
+                    char gender[][10],
+                    char phone_number[][11],
+                    char password[][20],
+                    char mailbox[][10])  
 {
     static int i = 0;
-    teacher *np;
-    np = (teacher *) malloc(sizeof(teacher));
+    student *np;
+    np = (student *) malloc(sizeof(student));   // 动态分配内存，存放学生数据
     strcpy(np->id, id[i]);
     strcpy(np->department, department[i]);
+    strcpy(np->major, major[i]);
     strcpy(np->name, name[i]);
+    strcpy(np->gender, gender[i]);
+    strcpy(np->phone_number, phone_number[i]);
     strcpy(np->password, password[i]);
     strcpy(np->mailbox, mailbox[i]);
+    np->s_fcourse = (course *) malloc(sizeof(course));  //  创建学生选课链表头结点
+    np->s_fcourse->next = NULL;
     np->next = NULL;
     i++;
     return np;
 }
-void print_tch(teacher *np) //  打印某个教师结点
+
+void print_std(student *np) //  打印某个学生结点
 {
-    printf("ID: %s / Department: %s / Name: %s / Mailbox: %s / Password: %s\n", np->id, np->department, np->name, np->mailbox, np->password);
-}                        
-void traversal_tch(teacher *fnode)  //  遍历并打印所有教师
+    printf("ID: %s / Department: %s / Major: %s / Name: %s / Gender: %s / Phone number: %s / Password: %s / Mailbox: %s\n", np->id, np->department, np->major, np->name, np->gender, np->phone_number, np->password, np->mailbox);
+}
+
+void traversal_std(student *fnode)  //  遍历并打印所有学生结点
 {
-    teacher *np = fnode; 
+    student *np = fnode;
     while(np != NULL)
     {
-        print_tch(np);
+        print_std(np);
         np = np->next;
     }
-}               
-teacher *insertBeginning_tch(teacher *fnode, teacher *newnode)  //  插入教师链表头部
+}
+
+student *insertBeginning_std(student *fnode, student *newnode)  //  插入学生链表头部  
 {
-    newnode->next = fnode; 
+    newnode->next = fnode;
     fnode = newnode;
     return fnode;
-} 
- course *tch_add_cos(course *t_fcourse)     //  教师功能——添加课程
+}
+
+
+
+
+
+ 
+//  学生功能
+//  1.登陆
+void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fcourse)
+{
+    int choice=0;
+	printf("--------[选课系统]--------\n");
+	printf("\t1.学生登陆\n");
+	printf("\t2.教师登录\n");
+	printf("\t3.退出系统\n");
+	printf("--------------------------\n");
+    int flag=0;
+	scanf("%d", &choice);
+	if (choice == 1)
+	{
+		printf("--------[学生登录]------\n");
+		flag = std_checkAccountandPassword(fstudent);
+        if (flag == 1)
+        {
+            choice = 0;
+            studentmenu1(fstudent);
+            scanf("%d", &choice);
+            if (choice == 1)
+            {
+                //  学生选课
+                std_select_cos(s_fcourse, t_fcourse);
+            }
+            else if (choice == 2)
+            {
+                //  查询课程
+            }
+            else if (choice == 3)
+            {
+                //  查询选课结果
+            }
+            else if (choice == 4)
+            {
+                //  删除选课结果
+            }
+            else if (choice == 5)
+            {
+                //  个人信息管理
+            }
+            else 
+            {
+                studentmenu1(fstudent);
+            }
+        }
+        else
+	    {
+            menu1(fstudent,fteacher,t_fcourse,s_fcourse);
+	    }   
+	}
+    else if (choice == 2)
+	{
+		printf("--------[教师登录]------\n");
+        flag = tch_checkAccountandPassword(fteacher);
+        if (flag == 1)
+        {
+            teachermenu1(fteacher);
+            scanf("%d", &choice);
+            if (choice == 1)
+            {
+                //  选课管理
+                tch_add_cos(t_fcourse);    
+            }
+            else if (choice == 2)
+            {
+                //  统计选课信息
+            }
+            else if (choice == 3)
+            {
+                //  课程管理
+            }
+            else if (choice == 4)
+            {
+                //  添加课程
+            }
+            else if (choice == 5)
+            {
+                //  修改课程
+            }
+            else if (choice == 6)
+            {
+                //  删除课程
+            }
+            else if (choice == 7)
+            {
+                //  个人信息管理
+            }
+            else
+            {
+                teachermenu1(fteacher);
+            }
+        }
+        else
+        {
+            menu1(fstudent,fteacher,t_fcourse,s_fcourse);
+        }
+	}
+}
+
+void studentmenu1(student *fstudent)
+{
+	printf("--------[学生功能]--------\n");
+	printf("\t1.学生选课\n");  
+	printf("\t2.查询课程\n");
+	printf("\t3.查询选课结果\n");
+	printf("\t4.删除选课结果\n");
+	printf("\t5.个人信息管理\n");
+	printf("\t6.返回上级菜单\n");
+	printf("--------------------------\n");
+
+}
+int std_checkAccountandPassword(student *np)
+{
+	char id[10],password[20];
+	printf("输入你的学号:\n");
+	scanf("%s", &id);
+	printf("输入你的密码:\n");
+    scanf("%s", &password);
+	while(np!=NULL)
+	{
+		if(strcmp(id,np->id)!=0)
+		{
+			np=np->next;
+		}
+        else
+        {
+            if(strcmp(password,np->password) == 0)
+		    {
+			    printf("登陆成功！\n");
+                return 1;
+		    }
+            else
+            {
+                printf("用户名或密码错误\n");
+                return 0;
+            }
+        }
+	}
+    return 0;
+}
+//  2.学生选课
+course *std_select_cos(course *s_fcourse, course *t_fcourse)  
+{
+    course *np, *new_course;
+    char key[20];
+    traversal_cos(t_fcourse);
+    traversal_cos(s_fcourse);
+    printf("请输入感兴趣课程的ID：\n");
+    scanf("%s", &key);
+    np = search_cos(t_fcourse, key);
+    np->selected++;
+    int a=0;
+    a = std_check_cos(s_fcourse, np);
+    if (a == 0)
+    {
+        new_course = std_create_cos(np);
+        s_fcourse = insertBeginning_cos(s_fcourse, new_course); //  插入课程链表头部
+    }
+    else if (a == 1)
+    {
+        printf("课程时间与已选修课程时间冲突\n");
+        np->selected--;
+    }
+    else if (a == 2)
+    {
+        printf("课程人满\n");
+        np->selected--;
+    }
+    else if (a == 3)
+    {
+        printf("超出一名学生单学期选修课程上限数（3）\n");
+        np->selected--;
+    }
+    traversal_cos(s_fcourse);
+    return s_fcourse;
+}
+void teachermenu1(teacher *fteacher)
+{
+    printf("--------[教师功能]--------\n");
+	printf("\t1.选课管理\n");  
+	printf("\t2.统计选课信息\n");
+	printf("\t3.课程管理\n");
+	printf("\t4.添加课程\n");
+	printf("\t5.修改课程\n");
+	printf("\t6.删除课程\n");
+    printf("\t7.个人信息管理\n");
+    printf("\t8.返回上级菜单\n");
+	printf("--------------------------\n");
+}
+int tch_checkAccountandPassword(teacher *np)                    //  教师账号密码检验
+{
+    char id[10],password[20];
+	printf("输入你的工号:\n");
+	scanf("%s", &id);
+	printf("输入你的密码:\n");
+    scanf("%s", &password);
+	while(np!=NULL)
+	{
+		if(strcmp(id,np->id)!=0)
+		{
+			np=np->next;
+		}
+        else
+        {
+            if(strcmp(password,np->password) == 0)
+		    {
+			    printf("登陆成功！\n");
+                return 1;
+		    }
+            else
+            {
+                printf("用户名或密码错误\n");
+                return 0;
+            }
+        }
+	}
+    return 0;
+}
+course *tch_add_cos(course *t_fcourse)     //  教师功能——添加课程
 {
     course *t_new_course;
     traversal_cos(t_fcourse);
