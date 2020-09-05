@@ -172,7 +172,7 @@ student *insertBeginning_std(student *fnode, student *newnode);         //  插入
 //      1.登陆
 void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fcourse);
 void studentmenu1(student *fstudent);                           //  学生功能菜单        
-int std_checkAccountandPassword(student *np);                   //  学生账号密码检验
+student *std_checkAccountandPassword(student *np);                   //  学生账号密码检验
 //      2.学生选课
 void std_select_cos(course *s_fcourse, course *t_fcourse);     
 //      3.查询课程
@@ -181,6 +181,12 @@ void search_cos_name(course *t_fcourse);            //  根据课程名搜索课程
 void search_cos_department(course *t_fcourse);    //  根据开课学院搜索课程
 void order_margin(course *t_fcourse);                   //  根据课余量排序 
 void order_selected(course *t_fcourse);                  //  根据选课人数排序 
+//      4.查询选课结果
+void search_s_courser_result(course *np);  //查询选课结果 
+//      5.删除选课结果
+void delete_s_courser_result(course *np, student*student);  //查询选课结果 
+//      6.个人信息管理
+void change_s_i(student*fostudent, char key);       //  删除选课结果
 
 //  教师功能：
 //      1.登陆
@@ -682,7 +688,7 @@ student *create_std(char id[][10],
     strcpy(np->password, password[i]);
     strcpy(np->mailbox, mailbox[i]);
     np->s_fcourse = (course *) malloc(sizeof(course));  //  创建学生选课链表头结点
-    np->s_fcourse->next = NULL;
+    np->s_fcourse= NULL;
     np->next = NULL;
     i++;
     return np;
@@ -729,17 +735,19 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
 	scanf("%d", &choice);
 	if (choice == 1)
 	{
+        student *np;
+        np = NULL;
 		printf("--------[学生登录]------\n");
-		flag = std_checkAccountandPassword(fstudent);
-        if (flag == 1)
+		np = std_checkAccountandPassword(fstudent);
+        if (np != NULL)
         {
             choice = 0;
-            studentmenu1(fstudent);
+            studentmenu1(np);
             scanf("%d", &choice);
             if (choice == 1)
             {
                 //  学生选课
-                std_select_cos(s_fcourse, t_fcourse);
+                std_select_cos(np->s_fcourse, t_fcourse);
             }
             else if (choice == 2)
             {
@@ -767,14 +775,17 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
             else if (choice == 3)
             {
                 //  查询选课结果
+                search_s_courser_result(np->s_fcourse); 
             }
             else if (choice == 4)
             {
                 //  删除选课结果
+                // delete_s_courser_result(course*np ,course*nb ,char key,student*student ,char searchname[20]);
             }
             else if (choice == 5)
             {
                 //  个人信息管理
+                // change_s_i(student*fostudent, char key);
             }
             else
             {
@@ -849,7 +860,7 @@ void studentmenu1(student *fstudent)
 	printf("--------------------------\n");
 
 }
-int std_checkAccountandPassword(student *np)
+student *std_checkAccountandPassword(student *np)
 {
 	char id[10],password[20];
 	printf("输入你的学号:\n");
@@ -867,16 +878,12 @@ int std_checkAccountandPassword(student *np)
             if(strcmp(password,np->password) == 0)
 		    {
 			    printf("登陆成功！\n");
-                return 1;
+                return np;
 		    }
-            else
-            {
-                printf("用户名或密码错误\n");
-                return 0;
-            }
         }
 	}
-    return 0;
+    printf("用户名或密码错误\n");
+    return NULL;
 }
 
 //  2.学生选课
@@ -1060,6 +1067,71 @@ void order_selected(course *t_fcourse)                //  根据选课人数排序
 	}
     traversal_cos(t_fcourse);
 }
+
+void search_s_courser_result(course *np)  //查询选课结果 
+{ 
+    if (np != NULL)
+    {
+        while(np!=NULL)
+	    {
+	 	    print_cos(np);
+	 	    np=np->next;
+	    }
+    }
+    else
+    {
+        printf("未有选课。\n");
+    }
+}
+
+/*
+void change_s_i(student*fostudent)                //  个人信息管理
+{
+	while(student->name!=key&&student!=NULL)
+	{
+		student=student->next;
+	 } 
+	 if(student!=NULL)
+	 {
+	 	printf("请输入您的新电话号码.\n");
+	 	student->phone_number=key;
+	 	printf("请输入您的新邮箱.\n");
+	 	student->mailbox=key;
+		scanf("%c",&key);
+		printf("请输入您的新密码.\n");
+		student->password=key; 
+		scanf("%c",&key);
+	 }
+	 else
+	 {
+	 	printf("未找到"); 
+	  } 
+}
+*/
+void delete_s_courser_result(course *np)   //   删除选课结果
+{ 
+    char searchname[20];
+    course *temp=NULL, *p=NULL;
+    p = np;
+	printf("请输入你要删除的课程名称:\n");
+	scanf("%s",searchname); 
+	while(p!=NULL)
+ 	{
+		temp = p;
+ 		p = p->next;
+    	if(p->name == searchname)
+    	{
+		    temp->next = p->next;
+		    free(p);
+		    printf("删除成功。");
+	    }
+		if(p == NULL)
+		{
+		 	printf("课程未被选。"); 
+		}
+	}
+}
+
 
 void teachermenu1(teacher *fteacher)
 {
