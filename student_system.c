@@ -186,7 +186,7 @@ void search_s_courser_result(course *np);  //查询选课结果
 //      5.删除选课结果
 void delete_s_courser_result(course *np);  //查询选课结果 
 //      6.个人信息管理
-void change_s_i(student *np);       //  删除选课结果
+void change_s_i(student *np);       //  个人信息管理
 
 //  教师功能：
 //      1.登陆
@@ -1197,15 +1197,39 @@ void tch_manage_course(teacher *account, course *t_fcourse, course *fstudent)
     scanf("%d", &choice);
     if (choice == 1)
     {
-        printf("您开设的课程相关信息：\n");
-        while(np != NULL)
+        printf("--------[查看选课情况]--------\n");
+	    printf("\t1.查询本人开设课程选课情况\n");  
+        printf("\t2.查询某门课程的学生信息\n");
+	    printf("\t3.返回上级菜单\n");
+	    printf("-------------------------\n");
+        int a=0;
+        scanf("%d", &a);
+        if (a == 1)
         {
-            if (account->name == np->teacher)
+            printf("您开设的课程相关信息：\n");
+            while(np != NULL)
             {
-                printf("课程编号：%s / 课程名称：%s / 选课人数：%s / ", &np->id, &np->name, &np->selected);
-                printf("课程简介：%s / 教材信息：%s\n", np->ioc, np->iom);
-            }       
-            np = np->next;
+                if (account->name == np->teacher)
+                {
+                    printf("课程编号：%s / 课程名称：%s / 选课人数：%s / ", &np->id, &np->name, &np->selected);
+                    printf("课程简介：%s / 教材信息：%s\n", np->ioc, np->iom);
+                }       
+                np = np->next;
+            }
+        }
+        else if (a == 2)
+        {
+            printf("请输入想要查询学生信息的课程名称\n");
+            char cos_name[20];
+            scanf("%s", &cos_name);
+            student *temp;
+            temp = fstudent;
+            while(temp != NULL)
+            {
+                if
+
+                temp = temp->next;
+            }
         }
     }
     else if (choice == 2)
