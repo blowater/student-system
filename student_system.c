@@ -148,7 +148,7 @@ course *tch_create_cos(course *t_fcourse);                              //  手动
 void print_cos(course *np);                                             //  打印某个课程结点
 void traversal_cos(course *fnode);                                      //  遍历并打印所有课程
 course *insertBeginning_cos(course *fnode, course *newnode);            //  插入课程链表头部
-int tch_check_course(course *fnode, course *new_node);                  //  检查教师开设新课程是否符合规则
+int tch_newcourse_check(course *fnode, course *new_node);                  //  检查教师开设新课程是否符合规则
 course *search_cos(course *np, char key[20]);                           //  根据ID搜索课程
 
 
@@ -191,8 +191,9 @@ void change_s_i(student *np);       //  删除选课结果
 //  教师功能：
 //      1.登陆
 void teachermenu1(teacher *fteacher);                           //  教师账号菜单
-int tch_checkAccountandPassword(teacher *np);                   //  教师账号密码检验
+teacher *tch_checkAccountandPassword(teacher *np);                   //  教师账号密码检验
 //      2.选课管理
+void tch_manage_course(teacher *account, course *t_fcourse, course *fstudent);
         //  a.查看选课情况：
 void tch_checkcourse(course *t_fcourse);                        //  查询教师自己开设过短的课程的选课情况（选课人数和课程详细信息）
 void tch_checkstudent(course *t_fcourse);                       //  查询某门课程的学生信息
@@ -492,7 +493,7 @@ course *tch_create_cos(course *t_fcourse)                    // 教师手动创建课程
     scanf("%s", np->iom);    
     np->next = NULL;
     int a=0;
-    a = tch_check_course(t_fcourse,np);
+    a = tch_newcourse_check(t_fcourse,np);
     if (a == 0)
     {
         return np;
@@ -541,7 +542,7 @@ course *insertBeginning_cos(course *fnode, course *newnode) //  插入课程链表头部
     fnode = newnode;
     return fnode;
 } 
-int tch_check_course(course *t_fcourse, course *new_node)
+int tch_newcourse_check(course *t_fcourse, course *new_node)
 {
     course *np;
     np = t_fcourse;
@@ -804,8 +805,10 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
 	}
     else if (choice == 2)
 	{
+        teacher *np;
+        np = NULL;
 		printf("--------[教师登录]------\n");
-        flag = tch_checkAccountandPassword(fteacher);
+        np = tch_checkAccountandPassword(fteacher);
         if (flag == 1)
         {
             teachermenu1(fteacher);
@@ -813,6 +816,7 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
             if (choice == 1)
             {
                 //  选课管理
+                tch_manage_course(t_fcourse, fstudent);
             }
             else if (choice == 2)
             {
@@ -843,15 +847,13 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fco
             {
                 menu1(fstudent,fteacher,t_fcourse,s_fcourse);
             }
-            
         }
-        else
-        {
-            menu1(fstudent,fteacher,t_fcourse,s_fcourse);
-        }
-	}
+    }
+    else
+    {
+        menu1(fstudent,fteacher,t_fcourse,s_fcourse);
+    }
 }
-
 void studentmenu1(student *fstudent)
 {
 	printf("--------[学生功能]--------\n");
@@ -1157,7 +1159,7 @@ void teachermenu1(teacher *fteacher)
     printf("\t8.返回上级菜单\n");
 	printf("--------------------------\n");
 }
-int tch_checkAccountandPassword(teacher *np)                    //  教师账号密码检验
+teacher *tch_checkAccountandPassword(teacher *np)                    //  教师账号密码检验
 {
     char id[10],password[20];
 	printf("输入你的工号:\n");
@@ -1168,30 +1170,54 @@ int tch_checkAccountandPassword(teacher *np)                    //  教师账号密码
 	{
 		if(strcmp(id,np->id)!=0)
 		{
-			np=np->next;
+			np=np->next; 
 		}
         else
         {
             if(strcmp(password,np->password) == 0)
 		    {
 			    printf("登陆成功！\n");
-                return 1;
+                return np;
 		    }
-            else
-            {
-                printf("用户名或密码错误\n");
-                return 0;
-            }
         }
 	}
-    return 0;
+    printf("用户名或密码错误\n");
+    return NULL;
 }
-void tch_checkcourse(course *t_fcourse)
+void tch_manage_course(teacher *account, course *t_fcourse, course *fstudent)
 {
-    course *np = t_fcourse;
-    
+    course *np;
+    np = t_fcourse;
+    int choice=0;
+    printf("--------[选课管理]--------\n");
+	printf("\t1.查看选课情况\n");  
+    printf("\t2.删除选课\n");
+	printf("\t3.返回上级菜单\n");
+	printf("-------------------------\n");
+    scanf("%d", &choice);
+    if (choice == 1)
+    {
+        printf("您开设的课程相关信息：\n");
+        while(np != NULL)
+        {
+            if (account->name == np->teacher)
+            {
+                printf("课程编号：%s / 课程名称：%s / 选课人数：%s / ", &np->id, &np->name, &np->selected);
+                printf("课程简介：%s / 教材信息：%s\n", np->ioc, np->iom);
+            }       
+            np = np->next;
+        }
+    }
+    else if (choice == 2)
+    {
+        
+    }
 }
-void *tch_add_cos(course *t_fcourse)     //  教师功能——添加课程
+void tch_checkcourse(course *t_fcourse)     //  查询教师自己开设过短的课程的选课情况（选课人数和课程详细信息）
+{
+
+} 
+void *tch_add_cos(course *t_fcourse)        //  教师功能——添加课程
 {
     course *t_new_course;
     traversal_cos(t_fcourse);
