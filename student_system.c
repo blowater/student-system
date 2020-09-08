@@ -170,13 +170,13 @@ void traversal_std(student *fnode);                                     //  遍历
 student *insertBeginning_std(student *fnode, student *newnode);         //  插入学生链表头部
 //  学生功能：
 //      1.登陆
-void menu1(student *fstudent,teacher *fteacher, course *t_fcourse, course *s_fcourse);
+void menu1(student *fstudent,teacher *fteacher, course *t_fcourse);
 void studentmenu1(course *t_fcourse,student *fstudent,teacher *fteacher,student *np);                                   //  学生功能菜单        
-student *std_checkAccountandPassword(student *np);                      //  学生账号密码检验
+student *std_checkAccountandPassword(student *np);                      //    学生账号密码检验
 //      2.学生选课
 void std_select_cos(course *s_fcourse, course *t_fcourse);     
 //      3.查询课程
-void studdentmenu2(student *fstudent, course *t_course);        //  学生查询课程二级菜单
+void studentmenu2(student *fstudent, course *t_course);        //  学生查询课程二级菜单
 void search_cos_name(course *t_fcourse);                        //  根据课程名搜索课程
 void search_cos_department(course *t_fcourse);                  //  根据开课学院搜索课程
 void order_margin(course *t_fcourse);                           //  根据课余量排序 
@@ -202,7 +202,7 @@ void tch_checkstudent(course *t_fcourse);                       //  查询某门课程
 //      3.统计选课信息
 void teachermenu2(course *t_fcourse, teacher *np);               
 void tch_cos_count(course *t_fcourse, teacher *np);             //  统计教师自己开设过的课程数目
-void selected_order(course *t_fcourse);                         //  按选课人数排序所有开设过的课程
+void selected_order(course *t_fcourse, teacher *np);              //  按选课人数排序所有开设过的课程
 //      4.课程管理
 void tch_manage_cos(course *t_fcourse, teacher *np);            //  查询所有开设的课程、根据课程名查询
 //      5.添加课程
@@ -357,7 +357,7 @@ int main()
     }
     traversal_cos(t_fcourse);
 
-    menu1(fstudent,fteacher,t_fcourse,s_fcourse);
+    menu1(fstudent,fteacher,t_fcourse);
 
 	return 0; 
 
@@ -748,7 +748,7 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse)
 	scanf("%d", &choice);
 	if (choice == 1)
 	{
-        student *np;
+        student *np; 
         np = NULL;
 		printf("--------[学生登录]------\n");
 		np = std_checkAccountandPassword(fstudent);
@@ -765,7 +765,7 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse)
             else if (choice == 2)
             {
                 //  查询课程
-                studdentmenu2(fstudent, t_fcourse);
+                studentmenu2(fstudent, t_fcourse);
             }
             else if (choice == 3)
             {
@@ -799,7 +799,7 @@ void menu1(student *fstudent,teacher *fteacher, course *t_fcourse)
         np = NULL;
 		printf("--------[教师登录]------\n");
         np = tch_checkAccountandPassword(fteacher);
-        if (flag == 1)
+        if (np != NULL)
         {
             teachermenu1(fteacher);
             scanf("%d", &choice);
@@ -869,7 +869,7 @@ void studentmenu1(course *t_fcourse,student *fstudent,teacher *fteacher,student 
     else if (choice == 2)
     {
         //  查询课程
-        studdentmenu2(fstudent, t_fcourse);
+        studentmenu2(fstudent, t_fcourse);
     }
     else if (choice == 3)
     {
@@ -1118,8 +1118,7 @@ void order_selected(course *t_fcourse)                //  根据选课人数排序
 		else
 		{
 			p_min->next = min->next;//前驱节点指向min的下一个节点，min可分离出原链表 
-		}
-		
+		}	
 	}
     if(first!=NULL)//循环结束后令尾指针的next为NULL 
 	{
@@ -1337,7 +1336,7 @@ void teachermenu2(course *t_fcourse, teacher *np)
     }
     else if (choice == 2)
     {
-        selected_order(t_fcourse);
+        selected_order(t_fcourse,np);
     }
    
 }
@@ -1356,17 +1355,68 @@ void tch_cos_count(course *t_fcourse, teacher *np)                          //  
     }
     printf("共开设了%d门课程\n", &i);
 }
-void selected_order(course *t_fcourse)                                      //  按选课人数排序所有开设过的课程
+void selected_order(course *t_fcourse, teacher *np)                                      //  按选课人数排序所有开设过的课程
 {
-    course *np,*temp,*p;
-    np = t_fcourse;
-    while(np != NULL)
+
+    course *first; //排列后有序链的表头指针
+	course *tail; //排列后有序链的表尾指针
+	course *p_min; //保留键值更小的节点的前驱节点的指针
+	course *min; //存储最小节点
+	course *p; //当前比较的节点
+    course *temp1;
+    course *temp2;
+    course *ftemp;
+    temp1 = t_fcourse;
+    while(temp1 != NULL)
     {
-        temp = np;
-        np = np->next;
-        np->next = NULL;
-        p = insertOrder(p, np);
+        if (temp1->teacher == np->name)
+        {
+            course *temp;
+            temp = (course *) malloc(sizeof(course));
+            temp = temp1;
+            temp->next = NULL;
+            ftemp = insertBeginning_cos(ftemp,temp);
+        }
+        temp1 = temp1->next;
     }
+    temp2 = ftemp;
+	first = NULL;
+	while(temp2!=NULL)
+	{
+		for(p=temp2,min=temp2;p->next!=NULL;p=p->next)//遍历所有节点 
+		{
+			if(p->next->selected < min->selected)// 找到最小节点 
+			{
+				p_min = p;  //保留前驱节点 
+				min = p->next;  //得到最小节点 
+			}
+		}
+		if(first==NULL)//第一次链表为空时 
+		{
+			first = min;//头为最小值 
+			tail = min;//尾为最小值 
+		}
+		else//链表中已有数据 
+		{
+			tail->next=min;//表尾next指向最小 
+			tail=min;//表尾也指向最小 
+		}
+		if(min==temp2)//使原链表中min脱离 
+		{
+			temp2 = temp2->next; 
+		}
+		else
+		{
+			p_min->next = min->next;//前驱节点指向min的下一个节点，min可分离出原链表 
+		}
+		
+	}
+    if(first!=NULL)//循环结束后令尾指针的next为NULL 
+	{
+		tail->next = NULL; 
+	}
+	temp2 = first;
+    traversal_cos(first);
 }
 void tch_manage_cos(course *t_fcourse, teacher *np)
 {
